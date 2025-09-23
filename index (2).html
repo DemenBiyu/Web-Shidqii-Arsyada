@@ -1,0 +1,3133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-translate="page-title">M. Shidqii Arsyada - Let Down</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Space+Grotesk:wght@300;400;600;700&display=swap');
+        
+        :root {
+            --primary-bg: #f0f7f0;
+            --secondary-bg: #ffffff;
+            --accent-green: #22c55e;
+            --accent-forest: #16a34a;
+            --accent-sage: #84cc16;
+            --accent-emerald: #10b981;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --nature-light: #dcfce7;
+            --nature-dark: #14532d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background: var(--primary-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            position: relative;
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            background: rgba(34, 197, 94, 0.8);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s ease;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 40px;
+            height: 40px;
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: all 0.3s ease;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(132, 204, 22, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+            z-index: -2;
+            animation: bg-shift 20s ease-in-out infinite;
+        }
+
+        @keyframes bg-shift {
+            0%, 100% { 
+                background: 
+                    radial-gradient(circle at 20% 80%, rgba(34, 197, 94, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 20%, rgba(132, 204, 22, 0.1) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.08) 0%, transparent 50%);
+            }
+            33% { 
+                background: 
+                    radial-gradient(circle at 70% 30%, rgba(34, 197, 94, 0.12) 0%, transparent 50%),
+                    radial-gradient(circle at 30% 70%, rgba(132, 204, 22, 0.08) 0%, transparent 50%),
+                    radial-gradient(circle at 60% 60%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+            }
+            66% { 
+                background: 
+                    radial-gradient(circle at 50% 90%, rgba(34, 197, 94, 0.08) 0%, transparent 50%),
+                    radial-gradient(circle at 90% 50%, rgba(132, 204, 22, 0.12) 0%, transparent 50%),
+                    radial-gradient(circle at 20% 20%, rgba(16, 185, 129, 0.09) 0%, transparent 50%);
+            }
+        }
+
+        /* Glitch Animation */
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+
+        @keyframes nature-glow {
+            0% { text-shadow: 0 2px 4px rgba(34, 197, 94, 0.3); }
+            50% { text-shadow: 0 4px 8px rgba(34, 197, 94, 0.4); }
+            100% { text-shadow: 0 2px 4px rgba(34, 197, 94, 0.3); }
+        }
+
+        @keyframes leaf-sway {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes typewriter {
+            from { width: 0; }
+            to { width: 100%; }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.1); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.6); }
+        }
+
+        /* WebGL Background Container */
+        #webgl-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1) 0%, rgba(132, 204, 22, 0.1) 100%);
+            padding-top: 80px;
+            overflow: hidden;
+        }
+
+        /* Profile Photo Styles */
+        .profile-photo-container {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 4px solid var(--accent-green);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.3);
+            transition: all 0.3s ease;
+            background: var(--secondary-bg);
+        }
+
+        .profile-photo:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 40px rgba(34, 197, 94, 0.4);
+            border-color: var(--accent-forest);
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .profile-placeholder {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(132, 204, 22, 0.1));
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .profile-placeholder span {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            opacity: 0.6;
+        }
+
+        .upload-btn {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-green);
+            border: 2px solid white;
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .upload-btn:hover {
+            background: var(--accent-forest);
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(34, 197, 94, 0.4);
+        }
+
+        .hero::before {
+            content: '🌿';
+            position: absolute;
+            top: 10%;
+            right: 10%;
+            font-size: 2rem;
+            animation: leaf-sway 6s ease-in-out infinite;
+            opacity: 0.2;
+        }
+
+        .hero::after {
+            content: '🌱';
+            position: absolute;
+            bottom: 10%;
+            left: 10%;
+            font-size: 2rem;
+            animation: leaf-sway 8s ease-in-out infinite reverse;
+            opacity: 0.2;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 8rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: nature-glow 3s ease-in-out infinite;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: -0.02em;
+            background: linear-gradient(45deg, var(--accent-forest), var(--accent-green), var(--accent-sage));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .cta-button {
+            padding: 1rem 2rem;
+            background: linear-gradient(45deg, var(--accent-forest), var(--accent-green));
+            border: none;
+            color: white;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-button::before {
+            content: '🌱';
+            position: absolute;
+            left: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+            transition: left 0.3s ease;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
+        }
+
+        .cta-button:hover::before {
+            left: 10px;
+        }
+
+        /* Section Styling */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        /* Simplified Section Ornaments */
+        #biodata::before {
+            content: '👤';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 1.5rem;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        #experience::before {
+            content: '🏆';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 1.5rem;
+            opacity: 0.15;
+            animation: sparkle 10s ease-in-out infinite;
+        }
+
+        #vision::before {
+            content: '🎯';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 1.5rem;
+            opacity: 0.15;
+            animation: nature-glow 12s ease-in-out infinite;
+        }
+
+        #hobbies::before {
+            content: '🎨';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 1.5rem;
+            opacity: 0.15;
+            animation: float 9s ease-in-out infinite;
+        }
+
+        #stats::before {
+            content: '📊';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 1.5rem;
+            opacity: 0.15;
+            animation: glitch 15s ease-in-out infinite;
+        }
+
+        #religious::before {
+            content: '🕌';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 1.5rem;
+            opacity: 0.15;
+            animation: nature-glow 14s ease-in-out infinite;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 600;
+            margin-bottom: 3rem;
+            text-align: center;
+            background: linear-gradient(45deg, var(--accent-forest), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+        }
+
+        .section-title::before {
+            content: '🌿';
+            position: absolute;
+            left: -50px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8em;
+            animation: leaf-sway 3s ease-in-out infinite;
+        }
+
+        .section-title::after {
+            content: '🌿';
+            position: absolute;
+            right: -50px;
+            top: 50%;
+            transform: translateY(-50%) scaleX(-1);
+            font-size: 0.8em;
+            animation: leaf-sway 3s ease-in-out infinite reverse;
+        }
+
+        /* Biodata Layout */
+        .biodata-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .biodata-container {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        .bio-panel {
+            background: var(--secondary-bg);
+            border: 2px solid rgba(34, 197, 94, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bio-card {
+            background: var(--secondary-bg);
+            border: 2px solid rgba(34, 197, 94, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+        }
+
+        .bio-panel::after,
+        .bio-card::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                var(--accent-forest), 
+                var(--accent-green), 
+                var(--accent-sage), 
+                var(--accent-emerald),
+                var(--accent-forest)
+            );
+            background-size: 400% 400%;
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0;
+            animation: gradient-border 4s ease infinite;
+            transition: opacity 0.3s ease;
+        }
+
+        .bio-panel:hover::after,
+        .bio-card:hover::after {
+            opacity: 1;
+        }
+
+        @keyframes gradient-border {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .bio-panel::before,
+        .bio-card::before {
+            content: '🌱';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            opacity: 0.3;
+            animation: leaf-sway 4s ease-in-out infinite;
+        }
+
+        .bio-panel:hover,
+        .bio-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--accent-green);
+            box-shadow: 0 20px 50px rgba(34, 197, 94, 0.25);
+            z-index: 10;
+        }
+
+        .bio-panel h3,
+        .bio-card h3 {
+            color: var(--accent-forest);
+            margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+        }
+
+        .bio-panel h3::after,
+        .bio-card h3::after {
+            content: '🌿';
+            margin-left: 0.5rem;
+            font-size: 0.8em;
+        }
+
+        .bio-section {
+            margin-bottom: 2rem;
+        }
+
+        .bio-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .bio-section h4 {
+            color: var(--accent-forest);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .info-item {
+            margin-bottom: 0.8rem;
+            padding: 0.5rem 0;
+        }
+
+        .info-item strong {
+            color: var(--accent-forest);
+            display: inline-block;
+            min-width: 100px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Education List Styles */
+        .education-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .education-item {
+            padding: 0.8rem;
+            background: rgba(34, 197, 94, 0.05);
+            border-radius: 10px;
+            border-left: 3px solid var(--accent-green);
+        }
+
+        .education-year {
+            color: var(--accent-forest);
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Skills List Styles */
+        .skills-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .skill-icon {
+            font-size: 2rem;
+            flex-shrink: 0;
+        }
+
+        .skill-item strong {
+            color: var(--accent-forest);
+            display: block;
+            margin-bottom: 0.3rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .skill-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        /* Dream Content Styles */
+        .dream-content {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            text-align: left;
+        }
+
+        .dream-icon {
+            font-size: 3rem;
+            flex-shrink: 0;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .dream-content strong {
+            color: var(--accent-forest);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.2rem;
+        }
+
+        .dream-content p {
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* Contact List Styles */
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.8rem;
+            background: rgba(34, 197, 94, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .contact-item:hover {
+            background: rgba(34, 197, 94, 0.1);
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .contact-item strong {
+            color: var(--accent-forest);
+            display: block;
+            margin-bottom: 0.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+        }
+
+        .contact-item p {
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        /* Life Story Styles */
+        .life-story-container {
+            margin-bottom: 4rem;
+        }
+
+        .story-card {
+            background: var(--secondary-bg);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 25px;
+            padding: 3rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.15);
+        }
+
+        .story-card::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, 
+                var(--accent-forest), 
+                var(--accent-green), 
+                var(--accent-sage), 
+                var(--accent-emerald),
+                var(--accent-forest)
+            );
+            background-size: 400% 400%;
+            border-radius: 28px;
+            z-index: -1;
+            opacity: 0;
+            animation: gradient-border 6s ease infinite;
+            transition: opacity 0.3s ease;
+        }
+
+        .story-card:hover::before {
+            opacity: 1;
+        }
+
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(34, 197, 94, 0.25);
+        }
+
+        .story-card h3 {
+            color: var(--accent-forest);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .story-card h3::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(45deg, var(--accent-forest), var(--accent-green));
+            border-radius: 2px;
+        }
+
+        .story-content {
+            line-height: 1.8;
+            color: var(--text-primary);
+        }
+
+        .story-content p {
+            margin-bottom: 1.5rem;
+            text-align: justify;
+            font-size: 1.05rem;
+            position: relative;
+            padding-left: 1rem;
+        }
+
+        .story-content p::before {
+            content: '🌱';
+            position: absolute;
+            left: -10px;
+            top: 0;
+            font-size: 0.8rem;
+            opacity: 0.4;
+        }
+
+        .story-content p:nth-child(even)::before {
+            content: '🌿';
+        }
+
+        .story-content p:last-child {
+            margin-bottom: 0;
+            font-weight: 500;
+            color: var(--accent-forest);
+            font-style: italic;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--accent-forest), var(--accent-green), var(--accent-sage));
+            transform: translateX(-50%);
+            border-radius: 2px;
+            box-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(50px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            flex: 1;
+            padding: 1.5rem;
+            background: var(--secondary-bg);
+            border-radius: 15px;
+            margin: 0 2rem;
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            position: relative;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.1);
+        }
+
+        .timeline-content::before {
+            content: '🌳';
+            position: absolute;
+            left: -35px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--secondary-bg);
+            padding: 0.5rem;
+            border-radius: 50%;
+            border: 3px solid var(--accent-green);
+            font-size: 1.2rem;
+        }
+
+        .timeline-year {
+            color: var(--accent-forest);
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+        }
+
+        .timeline-year::after {
+            content: '🍃';
+            margin-left: 0.5rem;
+            font-size: 0.8em;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Vision Mission */
+        .vision-section {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.05) 0%, rgba(132, 204, 22, 0.05) 100%);
+            position: relative;
+        }
+
+        .vision-text {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 300;
+            margin-bottom: 3rem;
+            line-height: 1.4;
+        }
+
+        .mission-list {
+            list-style: none;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .mission-item {
+            padding: 1rem 1rem 1rem 3rem;
+            margin-bottom: 1rem;
+            background: var(--secondary-bg);
+            border-left: 4px solid var(--accent-forest);
+            border-radius: 12px;
+            opacity: 0;
+            animation: typeIn 0.8s ease forwards;
+            box-shadow: 0 2px 10px rgba(34, 197, 94, 0.1);
+            position: relative;
+        }
+
+        .mission-item::before {
+            content: '🌱';
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2rem;
+        }
+
+        .mission-item:nth-child(1) { animation-delay: 0.2s; }
+        .mission-item:nth-child(2) { animation-delay: 0.4s; }
+        .mission-item:nth-child(3) { animation-delay: 0.6s; }
+        .mission-item:nth-child(4) { animation-delay: 0.8s; }
+
+        @keyframes typeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .motto-section {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .motto {
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-style: italic;
+            background: linear-gradient(45deg, var(--accent-forest), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+        }
+
+        .motto::before {
+            content: '🌿';
+            margin-right: 0.5rem;
+        }
+
+        .motto::after {
+            content: '🌿';
+            margin-left: 0.5rem;
+        }
+
+        /* Hobbies Grid */
+        .hobbies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .hobby-card {
+            background: var(--secondary-bg);
+            border-radius: 25px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(34, 197, 94, 0.2);
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hobby-card::after {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(60deg, 
+                var(--accent-green), 
+                var(--accent-sage), 
+                var(--accent-emerald), 
+                var(--accent-forest),
+                var(--accent-green)
+            );
+            background-size: 300% 300%;
+            border-radius: 28px;
+            z-index: -1;
+            opacity: 0;
+            animation: gradient-border 3s ease infinite;
+            transition: opacity 0.3s ease;
+        }
+
+        .hobby-card:hover::after {
+            opacity: 1;
+        }
+
+        .hobby-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(34, 197, 94, 0.1) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.3s ease;
+        }
+
+        .hobby-card:hover::before {
+            transform: scale(1);
+        }
+
+        .hobby-card:hover {
+            transform: translateY(-10px) scale(1.05);
+            border-color: var(--accent-green);
+            box-shadow: 0 15px 40px rgba(34, 197, 94, 0.3);
+            z-index: 10;
+        }
+
+        .hobby-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .hobby-title {
+            color: var(--accent-forest);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Statistics Section */
+        .stats-section {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.03) 0%, rgba(132, 204, 22, 0.03) 100%);
+            padding: 5rem 2rem;
+            position: relative;
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .chart-container {
+            background: var(--secondary-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .chart-container:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(34, 197, 94, 0.2);
+            border-color: var(--accent-green);
+            z-index: 10;
+        }
+
+        .chart-container::before {
+            content: '📊🌱';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.2rem;
+            opacity: 0.4;
+        }
+
+        .chart-title {
+            color: var(--accent-forest);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .chart-canvas {
+            max-height: 300px;
+        }
+
+        /* Analysis Text */
+        .analysis-text {
+            background: var(--nature-light);
+            padding: 2rem;
+            border-radius: 15px;
+            border-left: 6px solid var(--accent-forest);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            position: relative;
+        }
+
+        .analysis-text::before {
+            content: '🌿';
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            opacity: 0.5;
+        }
+
+        /* Religious Section */
+        .religious-section {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(132, 204, 22, 0.08) 100%);
+            padding: 5rem 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .religious-content {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .islamic-quote {
+            text-align: center;
+            margin-bottom: 4rem;
+            padding: 2rem;
+            background: var(--secondary-bg);
+            border-radius: 20px;
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.15);
+            position: relative;
+        }
+
+        .islamic-quote::before {
+            content: '✨';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--secondary-bg);
+            padding: 0.5rem;
+            border-radius: 50%;
+            font-size: 1.5rem;
+        }
+
+        .quote-arabic {
+            font-size: clamp(1.5rem, 4vw, 2.2rem);
+            font-weight: 600;
+            color: var(--accent-forest);
+            margin-bottom: 1rem;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.8;
+            direction: rtl;
+            text-align: center;
+        }
+
+        .quote-translation {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            color: var(--text-primary);
+            font-style: italic;
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .quote-source {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .reflection-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .reflection-card {
+            background: var(--secondary-bg);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+            border: 2px solid rgba(34, 197, 94, 0.2);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+        }
+
+        .reflection-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .reflection-card:hover::before {
+            left: 100%;
+        }
+
+        .reflection-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            border-color: var(--accent-green);
+            box-shadow: 0 18px 45px rgba(34, 197, 94, 0.25);
+            z-index: 10;
+        }
+
+        .reflection-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .reflection-card h3 {
+            color: var(--accent-forest);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .reflection-card p {
+            line-height: 1.7;
+            color: var(--text-primary);
+        }
+
+        .doa-section {
+            background: var(--secondary-bg);
+            border-radius: 25px;
+            padding: 3rem;
+            text-align: center;
+            border: 3px solid rgba(34, 197, 94, 0.3);
+            position: relative;
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.15);
+        }
+
+        .doa-section::before {
+            content: '🤲';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--secondary-bg);
+            padding: 0.8rem;
+            border-radius: 50%;
+            font-size: 2rem;
+            border: 3px solid var(--accent-green);
+        }
+
+        .doa-section h3 {
+            color: var(--accent-forest);
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+        }
+
+        .doa-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .doa-arabic {
+            font-size: clamp(1.3rem, 3vw, 1.8rem);
+            font-weight: 600;
+            color: var(--accent-forest);
+            margin-bottom: 1rem;
+            font-family: 'Times New Roman', serif;
+            line-height: 1.8;
+            direction: rtl;
+            text-align: center;
+        }
+
+        .doa-translation {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            color: var(--text-primary);
+            font-style: italic;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .doa-reflection {
+            color: var(--text-secondary);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--secondary-bg);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid var(--accent-green);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .contact-info {
+            margin-bottom: 2rem;
+        }
+
+        .contact-info a {
+            color: var(--accent-green);
+            text-decoration: none;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .download-cv {
+            padding: 1rem 2rem;
+            background: var(--accent-green);
+            color: var(--primary-bg);
+            border: none;
+            border-radius: 5px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .download-cv:hover {
+            animation: glitch 0.3s ease-in-out;
+            box-shadow: 0 0 20px var(--accent-green);
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 2px solid rgba(34, 197, 94, 0.2);
+            z-index: 1000;
+            padding: 1rem 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+        }
+
+        .navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: 0 4px 30px rgba(34, 197, 94, 0.15);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 1.2rem;
+            background: linear-gradient(45deg, var(--accent-forest), var(--accent-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            position: relative;
+        }
+
+        .nav-logo::before {
+            content: '🌿';
+            margin-right: 0.5rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav-item {
+            position: relative;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .nav-link:hover::before {
+            left: 100%;
+        }
+
+        .nav-link:hover {
+            color: var(--accent-forest);
+            background: rgba(34, 197, 94, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .nav-link.active {
+            background: linear-gradient(45deg, var(--accent-forest), var(--accent-green));
+            color: white;
+            box-shadow: 0 4px 15px rgba(34, 197, 94, 0.3);
+        }
+
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .nav-toggle span {
+            width: 25px;
+            height: 3px;
+            background: var(--accent-forest);
+            margin: 3px 0;
+            transition: 0.3s;
+            border-radius: 2px;
+        }
+
+        .nav-toggle.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .nav-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-toggle.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
+        /* Language Selector Styles */
+        .language-selector {
+            position: relative;
+        }
+
+        .language-dropdown {
+            position: relative;
+        }
+
+        .language-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(34, 197, 94, 0.1);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 25px;
+            color: var(--text-primary);
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 500;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 80px;
+        }
+
+        .language-btn:hover {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: var(--accent-green);
+            transform: translateY(-2px);
+        }
+
+        .flag-icon {
+            font-size: 1.2rem;
+        }
+
+        .dropdown-arrow {
+            font-size: 0.8rem;
+            transition: transform 0.3s ease;
+        }
+
+        .language-btn.active .dropdown-arrow {
+            transform: rotate(180deg);
+        }
+
+        .language-options {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: var(--secondary-bg);
+            border: 2px solid rgba(34, 197, 94, 0.3);
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(34, 197, 94, 0.2);
+            backdrop-filter: blur(20px);
+            min-width: 150px;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            margin-top: 0.5rem;
+        }
+
+        .language-options.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .language-option {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(34, 197, 94, 0.1);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .language-option:last-child {
+            border-bottom: none;
+        }
+
+        .language-option:hover {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--accent-forest);
+            transform: translateX(5px);
+        }
+
+        .language-option:first-child {
+            border-radius: 13px 13px 0 0;
+        }
+
+        .language-option:last-child {
+            border-radius: 0 0 13px 13px;
+        }
+
+        /* Mobile Navigation */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                padding-top: 2rem;
+                transition: left 0.3s ease;
+                border-top: 2px solid rgba(34, 197, 94, 0.2);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .nav-toggle {
+                display: flex;
+            }
+
+            .nav-link {
+                font-size: 1.1rem;
+                padding: 1rem 2rem;
+                margin: 0.5rem 0;
+                width: 200px;
+                text-align: center;
+            }
+
+            .language-selector {
+                margin-top: 1rem;
+            }
+
+            .language-options {
+                right: auto;
+                left: 50%;
+                transform: translateX(-50%) translateY(-10px);
+            }
+
+            .language-options.active {
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .section {
+                padding: 3rem 1rem;
+            }
+            
+            .biodata-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .timeline::before {
+                left: 20px;
+            }
+            
+            .timeline-item {
+                flex-direction: column;
+                margin-left: 40px;
+            }
+            
+            .timeline-item:nth-child(odd) {
+                flex-direction: column;
+            }
+            
+            .timeline-content {
+                margin: 0;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            animation: glitch 0.5s ease-in-out;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: var(--text-primary);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#hero" class="nav-logo" data-translate="logo">M. SHIDQII</a>
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="#hero" class="nav-link active" data-section="hero" data-translate="nav-home">🏠 Beranda</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#biodata" class="nav-link" data-section="biodata" data-translate="nav-biodata">👤 Biodata</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#experience" class="nav-link" data-section="experience" data-translate="nav-experience">🏆 Prestasi</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#vision" class="nav-link" data-section="vision" data-translate="nav-vision">🎯 Visi & Misi</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#hobbies" class="nav-link" data-section="hobbies" data-translate="nav-hobbies">🎨 Hobi</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#stats" class="nav-link" data-section="stats" data-translate="nav-stats">📊 Statistik</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#religious" class="nav-link" data-section="religious" data-translate="nav-religious">🕌 Refleksi</a>
+                </li>
+                <li class="nav-item language-selector">
+                    <div class="language-dropdown">
+                        <button class="language-btn" id="language-btn">
+                            <span class="flag-icon">🇮🇩</span>
+                            <span data-translate="current-lang">ID</span>
+                            <span class="dropdown-arrow">▼</span>
+                        </button>
+                        <div class="language-options" id="language-options">
+                            <div class="language-option" data-lang="id">
+                                <span class="flag-icon">🇮🇩</span>
+                                <span data-translate="lang-id">Indonesia</span>
+                            </div>
+                            <div class="language-option" data-lang="en">
+                                <span class="flag-icon">🇺🇸</span>
+                                <span data-translate="lang-en">English</span>
+                            </div>
+                            <div class="language-option" data-lang="ar">
+                                <span class="flag-icon">🇸🇦</span>
+                                <span data-translate="lang-ar">العربية</span>
+                            </div>
+                            <div class="language-option" data-lang="jv">
+                                <span class="flag-icon">🏛️</span>
+                                <span data-translate="lang-jv">Jawa</span>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="cursor" id="cursor"></div>
+    <div class="cursor-follower" id="cursor-follower"></div>
+
+    <div id="webgl-container"></div>
+
+    <section id="hero" class="hero">
+    <div class="profile-photo-container">
+        <div class="profile-photo">
+            <img src="my kisah.jpg" alt="Foto Profil M. Shidqii Arsyada" id="profile-img"
+                onerror="this.style.display='none'; document.querySelector('.profile-placeholder').style.display='flex';">
+            <div class="profile-placeholder">
+                
+            </div>
+            <input type="file" id="photo-upload" accept="image/*" style="display: none;">
+            <button class="upload-btn" onclick="document.getElementById('photo-upload').click()">
+                <span data-translate="upload-btn">📷</span>
+            </button>
+        </div>
+    </div>
+    <h1 class="hero-title" data-translate="hero-name">M. SHIDQII ARSYADA</h1>
+    <p class="hero-subtitle" data-translate="hero-subtitle">
+        Sebuah halaman yang pecah lalu pulih — biodata & karya M. Shidqii Arsyada.
+    </p>
+    <a href="#biodata" class="cta-button" data-translate="hero-cta">Masuk ke ruang fragile →</a>
+</section>
+
+<script>
+    const photoUpload = document.getElementById("photo-upload");
+    const profileImg = document.getElementById("profile-img");
+    const placeholder = document.querySelector(".profile-placeholder");
+
+    // Cek apakah ada foto tersimpan di localStorage
+    window.addEventListener("DOMContentLoaded", () => {
+        const savedPhoto = localStorage.getItem("profile-photo");
+        if (savedPhoto) {
+            profileImg.src = savedPhoto;
+            profileImg.style.display = "block";
+            placeholder.style.display = "none";
+        }
+    });
+
+    // Event ketika user upload foto baru
+    photoUpload.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const imageData = e.target.result;
+
+                // tampilkan foto
+                profileImg.src = imageData;
+                profileImg.style.display = "block";
+                placeholder.style.display = "none";
+
+                // simpan ke localStorage
+                localStorage.setItem("profile-photo", imageData);
+            }
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+
+    <section id="biodata" class="section">
+        <h2 class="section-title" data-translate="section-biodata">BIODATA</h2>
+        <div class="biodata-container">
+            <div class="bio-panel">
+                <h3 data-translate="biodata-panel-1-title">Informasi Pribadi</h3>
+                
+                <div class="bio-section">
+                    <h4 data-translate="biodata-h4-1">👤 Identitas</h4>
+                    <div class="info-item">
+                        <strong data-translate="info-name-strong">Nama:</strong> <span data-translate="info-name-text">M. Shidqii Arsyada</span>
+                    </div>
+                    <div class="info-item">
+                        <strong data-translate="info-dob-strong">TTL:</strong> <span data-translate="info-dob-text">15 Maret 2007</span>
+                    </div>
+                    <div class="info-item">
+                        <strong data-translate="info-address-strong">Alamat:</strong> <span data-translate="info-address-text">Desa Samborejo RT/RW 15/5, Jalan Haji. Abdullah, Kabupaten Pekalongan, Provinsi Jawa Tengah</span>
+                    </div>
+                </div>
+
+                <div class="bio-section">
+                    <h4 data-translate="biodata-h4-2">📞 Kontak</h4>
+                    <div class="contact-list">
+                        <div class="contact-item">
+                            <span class="contact-icon">📱</span>
+                            <div>
+                                <strong data-translate="contact-phone-strong">Telepon</strong>
+                                <p data-translate="contact-phone-p">+62 xxx-xxxx-xxxx</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <span class="contact-icon">📧</span>
+                            <div>
+                                <strong data-translate="contact-email-strong">Email</strong>
+                                <p data-translate="contact-email-p">Alzarsi@gmail.com</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bio-panel">
+                <h3 data-translate="biodata-panel-2-title">Pendidikan & Kemampuan</h3>
+                
+                <div class="bio-section">
+                    <h4 data-translate="biodata-h4-3">🎓 Riwayat Pendidikan</h4>
+                    <div class="education-list">
+                        <div class="education-item">
+                            <div class="education-year" data-translate="edu-year-1">2015–2021</div>
+                            <p data-translate="edu-school-1">MI Samborejo</p>
+                        </div>
+                        <div class="education-item">
+                            <div class="education-year" data-translate="edu-year-2">2021–2024</div>
+                            <p data-translate="edu-school-2">SMP N 1 Tirto</p>
+                        </div>
+                        <div class="education-item">
+                            <div class="education-year" data-translate="edu-year-3">2024–Selesai</div>
+                            <p data-translate="edu-school-3">SMK MA'ARIF NU Tirto</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bio-section">
+                    <h4 data-translate="biodata-h4-4">🎨 Keahlian</h4>
+                    <div class="skills-list">
+                        <div class="skill-item">
+                            <span class="skill-icon">🎨</span>
+                            <div>
+                                <strong data-translate="skill-1-strong">Desain UI/UX</strong>
+                                <p data-translate="skill-1-p">Merancang antarmuka pengguna yang intuitif dan menarik</p>
+                            </div>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-icon">🖼️</span>
+                            <div>
+                                <strong data-translate="skill-2-strong">Desain Grafis</strong>
+                                <p data-translate="skill-2-p">Membuat poster, ilustrasi, dan konten visual kreatif</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bio-section">
+                    <h4 data-translate="biodata-h4-5">🎯 Cita-cita</h4>
+                    <div class="dream-content">
+                        <span class="dream-icon">💻</span>
+                        <div>
+                            <strong data-translate="dream-strong">Programmer</strong>
+                            <p data-translate="dream-p">Menjadi seorang programmer handal yang dapat menciptakan solusi teknologi inovatif untuk membantu masyarakat dan berkontribusi dalam perkembangan dunia digital.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="section">
+        <h2 class="section-title" data-translate="section-experience">RIWAYAT HIDUP & PENGALAMAN</h2>
+        
+        <div class="life-story-container">
+            <div class="story-card">
+                <h3 data-translate="story-card-title">📖 Perjalanan Hidup: Dari Pendiam Menuju Berani</h3>
+                <div class="story-content">
+                    <p data-translate="story-para1">Lahir dan tumbuh di desa Samborejo yang asri, saya adalah anak yang cukup pendiam dan penakut. Di masa kecil, berbicara di depan orang banyak terasa seperti mimpi buruk. Suara saya sering bergetar ketika diminta membaca di kelas, dan saya lebih memilih duduk di pojok belakang daripada menjadi pusat perhatian.</p>
+                    
+                    <p data-translate="story-para2">Namun, hidup mulai mengajarkan saya untuk melangkah keluar dari zona nyaman. Di SD, meski dengan tangan berkeringat dan jantung berdebar, saya memberanikan diri mengikuti lomba cerdas cermat. Kejutan besar datang ketika berhasil meraih juara 3! Prestasi kecil itu menjadi benih kepercayaan diri pertama. Tahun berikutnya, saya kembali mencoba - kali ini di lomba adzan, dan alhamdulillah meraih juara 2.</p>
+                    
+                    <p data-translate="story-para3">Masa SMP menjadi periode transisi yang menantang. Rasa gugup masih sering muncul, terutama saat presentasi atau berbicara di forum. Namun, saya mulai belajar bahwa keberanian bukan berarti tidak takut, melainkan tetap melangkah meski takut. Perlahan, saya mulai mengangkat tangan untuk menjawab pertanyaan guru, ikut diskusi kelas, bahkan memberanikan diri mengikuti lomba cerdas cermat dan olimpiade sains meski tidak menang.</p>
+                    
+                    <p data-translate="story-para4">Titik balik terbesar terjadi ketika masuk SMK MA'ARIF NU Tirto. Dengan tekad bulat untuk berubah, saya memberanikan diri mendaftar Paskibra - sesuatu yang tidak pernah terbayangkan oleh diri saya yang dulu. Latihan baris-berbaris, komando dengan suara lantang, dan tanggung jawab mengibarkan bendera merah putih mengajarkan saya arti disiplin dan keberanian sejati.</p>
+                    
+                    <p data-translate="story-para5">Dari situ, pintu-pintu baru terbuka. Saya bergabung dengan OSIS, aktif di IPNU, bahkan berani terlibat sebagai panitia berbagai kegiatan desa. Setiap langkah kecil membangun kepercayaan diri yang lebih besar. Anak yang dulu takut berbicara, kini berani memimpin rapat, mengorganisir acara, dan bahkan berbagi ide-ide kreatif.</p>
+                    
+                    <p data-translate="story-para6">Perjalanan ini mengajarkan saya bahwa setiap orang memiliki potensi untuk berubah dan berkembang. Yang dibutuhkan hanyalah keberanian untuk mengambil langkah pertama, meski kecil dan penuh ketakutan. Dari anak pendiam di desa Samborejo, saya belajar bahwa keberanian adalah otot yang semakin kuat jika terus dilatih.</p>
+                </div>
+            </div>
+        </div>
+
+        <h3 data-translate="exp-cards-title" style="text-align: center; color: var(--accent-forest); font-family: 'JetBrains Mono', monospace; margin: 3rem 0 2rem 0; font-size: 1.5rem;">🏆 Pengalaman Organisasi & Kegiatan</h3>
+        <div class="hobbies-grid">
+            <div class="bio-card">
+                <h3 data-translate="exp-card-1-title">Paskibra SMK</h3>
+                <p data-translate="exp-card-1-p">Mengikuti kegiatan Pasukan Pengibar Bendera di SMK MA'ARIF NU Tirto. Kegiatan ini menjadi titik balik dalam membangun keberanian dan kedisiplinan. Dari yang awalnya takut berbaris di depan, kini mampu memimpin barisan dan mengibarkan bendera dengan penuh kebanggaan. Melatih kedisiplinan, tanggung jawab, dan rasa nasionalisme.</p>
+            </div>
+            <div class="bio-card">
+                <h3 data-translate="exp-card-2-title">OSIS SMK</h3>
+                <p data-translate="exp-card-2-p">Aktif dalam organisasi siswa intra sekolah, berkontribusi dalam berbagai kegiatan dan program sekolah. Pengalaman di OSIS mengajarkan cara berorganisasi, memimpin tim, dan mengkoordinir berbagai acara sekolah. Dari yang dulu takut berpendapat, kini berani mengusulkan ide-ide kreatif untuk kemajuan sekolah.</p>
+            </div>
+            <div class="bio-card">
+                <h3 data-translate="exp-card-3-title">IPNU (Ikatan Pelajar Nahdlatul Ulama)</h3>
+                <p data-translate="exp-card-3-p">Bergabung dengan Ikatan Pelajar Nahdlatul Ulama, mengembangkan jiwa kepemimpinan dan sosial. Kegiatan di IPNU memperkuat nilai-nilai keagamaan sekaligus mengasah kemampuan berorganisasi. Terlibat dalam berbagai kegiatan dakwah, sosial, dan pengembangan diri yang memperluas wawasan dan jaringan pertemanan.</p>
+            </div>
+            <div class="bio-card">
+                <h3 data-translate="exp-card-4-title">Panitia Kegiatan Desa</h3>
+                <p data-translate="exp-card-4-p">Terlibat dalam kegiatan kemasyarakatan di tingkat desa Samborejo, membantu berbagai acara dan program desa. Pengalaman ini mengajarkan pentingnya gotong royong dan kepedulian terhadap masyarakat. Dari yang dulu hanya menjadi penonton, kini aktif sebagai panitia yang membantu mensukseskan berbagai acara tradisional dan keagamaan di desa.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="vision" class="vision-section">
+        <h2 class="section-title" data-translate="section-vision">VISI & MISI</h2>
+        <div class="vision-text" data-translate="vision-text">
+            Menjadi pribadi kreatif dan inspiratif melalui karya digital, teknologi, serta kehidupan yang sehat dan berkarakter.
+        </div>
+        <ul class="mission-list">
+            <li class="mission-item" data-translate="mission-item-1">Mengasah keterampilan desain, fotografi, dan teknologi informasi.</li>
+            <li class="mission-item" data-translate="mission-item-2">Menjaga kesehatan tubuh dengan olahraga rutin.</li>
+            <li class="mission-item" data-translate="mission-item-3">Membuat karya digital yang bermanfaat dan inspiratif.</li>
+            <li class="mission-item" data-translate="mission-item-4">Menjalani hidup dengan disiplin, tanggung jawab, dan budi pekerti.</li>
+        </ul>
+    </section>
+
+    <section class="motto-section">
+        <h2 class="section-title" data-translate="section-motto">MOTO & MOTIVASI</h2>
+        <div class="motto" data-translate="motto-1">"Langkahmu berhenti, tapi bumi tetap menari."</div>
+        <div class="motto" data-translate="motto-2">"Kegagalan tak melahirkan keberhasilan, tapi ia memaksa kita untuk menjemputnya."</div>
+    </section>
+
+    <section id="hobbies" class="section">
+        <h2 class="section-title" data-translate="section-hobbies">HOBI & DOKUMENTASI</h2>
+        <div class="hobbies-grid">
+            <div class="hobby-card" onclick="openLightbox('sport')">
+                <span class="hobby-icon">🏃‍♂️</span>
+                <h3 class="hobby-title" data-translate="hobby-1-title">Berolahraga</h3>
+                <p data-translate="hobby-1-p">Rutinitas olahraga menambah energi dan menjaga fokus belajar. Biasanya saya melakukan latihan kardio ringan, push-up, dan latihan kekuatan tubuh bagian atas.</p>
+            </div>
+            <div class="hobby-card" onclick="openLightbox('photo')">
+                <span class="hobby-icon">📸</span>
+                <h3 class="hobby-title" data-translate="hobby-2-title">Fotografi</h3>
+                <p data-translate="hobby-2-p">Mencari frame dalam keseharian — dari lanskap desa hingga potret teman. Editing dilakukan di Lightroom/Photoshop.</p>
+            </div>
+            <div class="hobby-card" onclick="openLightbox('design')">
+                <span class="hobby-icon">🎨</span>
+                <h3 class="hobby-title" data-translate="hobby-3-title">Desain Grafis</h3>
+                <p data-translate="hobby-3-p">Membuat poster, ilustrasi, dan template. Bekerja dengan Adobe/Clip Studio/Procreate atau aplikasi mobile.</p>
+            </div>
+            <div class="hobby-card" onclick="openLightbox('singing')">
+                <span class="hobby-icon">🎤</span>
+                <h3 class="hobby-title" data-translate="hobby-4-title">Bernyanyi</h3>
+                <p data-translate="hobby-4-p">Latihan vokal untuk menjaga pitch & pernapasan. Sering merekam cover singkat sebagai latihan.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="stats" class="stats-section">
+        <div class="section">
+            <h2 class="section-title" data-translate="section-stats">KEGIATAN & ANALISIS STATISTIK</h2>
+            <div class="charts-grid">
+                <div class="chart-container">
+                    <h3 class="chart-title" data-translate="chart-1-title">Frekuensi Kegiatan Mingguan</h3>
+                    <canvas id="frequencyChart" class="chart-canvas"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title" data-translate="chart-2-title">Proporsi Waktu per Minggu</h3>
+                    <canvas id="timeChart" class="chart-canvas"></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title" data-translate="chart-3-title">Timeline Prestasi</h3>
+                    <canvas id="achievementChart" class="chart-canvas"></canvas>
+                </div>
+            </div>
+            <div class="analysis-text">
+                <h3 data-translate="analysis-text-h3" style="color: var(--accent-forest); margin-bottom: 1rem;">Insight Analisis</h3>
+                <p data-translate="analysis-text-p1">Waktu mingguan menunjukkan desain & belajar mendominasi dengan total 42 jam per minggu. Olahraga konsisten 4 kali seminggu menunjukkan keseimbangan aktivitas fisik & kreatif. Fotografi dan bernyanyi menjadi outlet kreatif tambahan yang menyeimbangkan rutinitas akademik. Timeline prestasi menunjukkan konsistensi partisipasi dalam kompetisi sejak SD hingga SMK, dengan puncak pencapaian di tahun 2024 sebagai Pelajar Penggerak dan Juara 3 Lomba Desain.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="religious" class="religious-section">
+        <div class="section">
+            <h2 class="section-title" data-translate="section-religious">REFLEKSI KEAGAMAAN</h2>
+            <div class="religious-content">
+                <div class="islamic-quote">
+                    <div class="quote-arabic" data-translate="quote-arabic">وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا</div>
+                    <div class="quote-translation" data-translate="quote-translation">"Dan barangsiapa bertakwa kepada Allah, niscaya Dia akan mengadakan baginya jalan keluar."</div>
+                    <div class="quote-source" data-translate="quote-source">- QS. At-Talaq: 2</div>
+                </div>
+                
+                <div class="reflection-grid">
+                    <div class="reflection-card">
+                        <div class="reflection-icon">📊</div>
+                        <h3 data-translate="reflection-card-1-h3">Kejujuran dalam Data</h3>
+                        <p data-translate="reflection-card-1-p">Dalam pembuatan website biodata ini, saya berkomitmen menyajikan informasi yang jujur dan akurat. Setiap data prestasi, pengalaman, dan statistik yang ditampilkan adalah nyata tanpa rekayasa. Allah SWT menyukai hamba yang jujur dalam perkataan dan perbuatan.</p>
+                    </div>
+                    
+                    <div class="reflection-card">
+                        <div class="reflection-icon">🎨</div>
+                        <h3 data-translate="reflection-card-2-h3">Kreativitas sebagai Amanah</h3>
+                        <p data-translate="reflection-card-2-p">Kemampuan desain dan teknologi yang saya miliki adalah amanah dari Allah. Website ini dibuat dengan niat baik untuk berbagi karya dan inspirasi. Setiap elemen visual dirancang dengan mempertimbangkan nilai estetika yang tidak berlebihan dan tetap sopan.</p>
+                    </div>
+                    
+                    <div class="reflection-card">
+                        <div class="reflection-icon">🌐</div>
+                        <h3 data-translate="reflection-card-3-h3">Teknologi untuk Kebaikan</h3>
+                        <p data-translate="reflection-card-3-p">Menggunakan teknologi web modern (HTML, CSS, JavaScript) sebagai sarana dakwah dan berbagi ilmu. Website ini menjadi media untuk menunjukkan bahwa teknologi dapat digunakan untuk hal-hal positif dan bermanfaat bagi orang lain.</p>
+                    </div>
+                    
+                    <div class="reflection-card">
+                        <div class="reflection-icon">🤲</div>
+                        <h3 data-translate="reflection-card-4-h3">Tawadhu dalam Berkarya</h3>
+                        <p data-translate="reflection-card-4-p">Meskipun website ini menampilkan prestasi dan kemampuan, saya tetap menyadari bahwa semua pencapaian adalah karunia Allah. Tidak ada maksud untuk sombong atau riya, melainkan sebagai bentuk syukur dan motivasi untuk terus berkarya lebih baik.</p>
+                    </div>
+                </div>
+                
+                <div class="analysis-text" style="margin: 3rem 0; background: var(--secondary-bg); border-left: 6px solid var(--accent-forest);">
+                    <h3 data-translate="analysis-text-2-h3" style="color: var(--accent-forest); margin-bottom: 1rem; font-family: 'JetBrains Mono', monospace;">🌐 Refleksi Pembuatan Website</h3>
+                    <p style="margin-bottom: 1rem;">
+                        <strong data-translate="website-reflection-1-strong">Proses Kreatif:</strong> <span data-translate="website-reflection-1-p">Website ini dibuat dengan memadukan teknologi modern dan nilai-nilai Islami. Setiap animasi, warna hijau alam, dan elemen visual dipilih untuk mencerminkan kesederhanaan dan keindahan ciptaan Allah.</span>
+                    </p>
+                    <p style="margin-bottom: 1rem;">
+                        <strong data-translate="website-reflection-2-strong">Integritas Data:</strong> <span data-translate="website-reflection-2-p">Semua informasi yang disajikan dalam website ini adalah fakta yang dapat dipertanggungjawabkan. Tidak ada data yang dilebih-lebihkan atau dikurangi, karena kejujuran adalah fondasi akhlak seorang muslim.</span>
+                    </p>
+                    <p style="margin-bottom: 1rem;">
+                        <strong data-translate="website-reflection-3-strong">Manfaat untuk Sesama:</strong> <span data-translate="website-reflection-3-p">Website ini tidak hanya sebagai portofolio pribadi, tetapi juga sebagai inspirasi bagi teman-teman yang ingin belajar web development. Kode yang dibuat menggunakan teknologi terbuka yang dapat dipelajari siapa saja.</span>
+                    </p>
+                    <p>
+                        <strong data-translate="website-reflection-4-strong">Niat Ibadah:</strong> <span data-translate="website-reflection-4-p">Setiap baris kode ditulis dengan niat bahwa ilmu teknologi ini akan bermanfaat dan menjadi ladang pahala. Semoga karya ini menjadi amal jariyah yang terus mengalir manfaatnya.</span>
+                    </p>
+                </div>
+
+                <div class="doa-section">
+                    <h3 data-translate="doa-section-h3">Doa & Harapan untuk Karya Digital</h3>
+                    <div class="doa-content">
+                        <div class="doa-arabic" data-translate="doa-arabic">رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ</div>
+                        <div class="doa-translation" data-translate="doa-translation">"Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, dan peliharalah kami dari siksa neraka."</div>
+                        <p class="doa-reflection" data-translate="doa-reflection">Semoga website ini dan setiap karya digital yang saya buat selalu dalam ridho Allah SWT. Mudah-mudahan teknologi yang saya pelajari dapat menjadi sarana untuk berbuat kebaikan, menyebarkan ilmu yang bermanfaat, dan menjadi bekal di akhirat kelak. Aamiin ya rabbal alamiin.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="contact-info">
+                <p data-translate="contact-footer-p">Kontak: <a href="mailto:shidqii.arsyada@email.com" data-translate="contact-footer-email">shidqii.arsyada@email.com</a></p>
+            </div>
+            <a href="#" class="download-cv" onclick="downloadCV()" data-translate="download-cv-btn">Download CV</a>
+            <p data-translate="footer-copyright" style="margin-top: 2rem; color: var(--text-secondary); font-size: 0.9rem;">
+                © 2024 M. Shidqii Arsyada - Inspired by "Let Down" Radiohead
+            </p>
+        </div>
+    </footer>
+
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        <div class="lightbox-content" id="lightbox-content">
+            </div>
+    </div>
+
+    <script>
+        // WebGL Background
+        let scene, camera, renderer, particles;
+
+        function initWebGL() {
+            const container = document.getElementById('webgl-container');
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer({ alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            container.appendChild(renderer.domElement);
+
+            // Create floating particles
+            const geometry = new THREE.BufferGeometry();
+            const vertices = [];
+            const colors = [];
+
+            for (let i = 0; i < 1000; i++) {
+                vertices.push(
+                    (Math.random() - 0.5) * 2000,
+                    (Math.random() - 0.5) * 2000,
+                    (Math.random() - 0.5) * 2000
+                );
+                
+                // Green nature colors
+                const greenVariant = Math.random();
+                if (greenVariant < 0.4) {
+                    colors.push(0.13, 0.77, 0.37); // Forest green
+                } else if (greenVariant < 0.7) {
+                    colors.push(0.52, 0.8, 0.09); // Sage green
+                } else {
+                    colors.push(0.06, 0.73, 0.51); // Emerald green
+                }
+            }
+
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 2,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.6
+            });
+
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            camera.position.z = 1000;
+
+            animate();
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            particles.rotation.x += 0.0005;
+            particles.rotation.y += 0.001;
+            
+            renderer.render(scene, camera);
+        }
+
+        // Charts Data
+        const chartData = {
+            frequency: {
+                labels: ['Sekolah/Belajar', 'Latihan Olahraga', 'Fotografi', 'Desain Grafis', 'Bernyanyi', 'Organisasi', 'Santai/Sosial'],
+                data: [6, 4, 3, 5, 2, 1, 7]
+            },
+            timeProportions: {
+                labels: ['Sekolah/Belajar', 'Desain Grafis', 'Fotografi', 'Olahraga', 'Bernyanyi', 'Santai'],
+                data: [36, 6, 4, 5, 1.5, 7]
+            },
+            achievements: {
+                labels: ['2018', '2019', '2022', '2023', '2024', '2024'],
+                data: [3, 3, 1, 1, 2, 3],
+                events: ['Juara 3 Cerdas Cermat SD', 'Juara 2 Adzan SD', 'Mengikuti Cerdas Cermat SMP', 'Mengikuti Olimpiade Sains', 'Pelajar Penggerak', 'Juara 3 Lomba Desain']
+            }
+        };
+
+        // Initialize Charts
+        function initCharts() {
+            // Frequency Chart
+            const freqCtx = document.getElementById('frequencyChart').getContext('2d');
+            new Chart(freqCtx, {
+                type: 'bar',
+                data: {
+                    labels: chartData.frequency.labels,
+                    datasets: [{
+                        label: 'Frekuensi per Minggu',
+                        data: chartData.frequency.data,
+                        backgroundColor: 'rgba(34, 197, 94, 0.6)',
+                        borderColor: 'rgba(22, 163, 74, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#1f2937'
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: '#1f2937'
+                            },
+                            grid: {
+                                color: 'rgba(34, 197, 94, 0.2)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#1f2937'
+                            },
+                            grid: {
+                                color: 'rgba(34, 197, 94, 0.2)'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Time Proportions Chart
+            const timeCtx = document.getElementById('timeChart').getContext('2d');
+            new Chart(timeCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: chartData.timeProportions.labels,
+                    datasets: [{
+                        data: chartData.timeProportions.data,
+                        backgroundColor: [
+                            'rgba(34, 197, 94, 0.8)',
+                            'rgba(22, 163, 74, 0.8)',
+                            'rgba(132, 204, 22, 0.8)',
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(101, 163, 13, 0.8)',
+                            'rgba(5, 150, 105, 0.8)'
+                        ],
+                        borderColor: '#ffffff',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#1f2937'
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Achievement Timeline Chart
+            const achCtx = document.getElementById('achievementChart').getContext('2d');
+            new Chart(achCtx, {
+                type: 'line',
+                data: {
+                    labels: chartData.achievements.labels,
+                    datasets: [{
+                        label: 'Level Prestasi',
+                        data: chartData.achievements.data,
+                        borderColor: 'rgba(22, 163, 74, 1)',
+                        backgroundColor: 'rgba(34, 197, 94, 0.2)',
+                        borderWidth: 3,
+                        pointBackgroundColor: 'rgba(132, 204, 22, 1)',
+                        pointBorderColor: 'rgba(132, 204, 22, 1)',
+                        pointRadius: 6,
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#1f2937'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                afterLabel: function(context) {
+                                    return chartData.achievements.events[context.dataIndex];
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 4,
+                            ticks: {
+                                color: '#1f2937',
+                                callback: function(value) {
+                                    const levels = ['', 'Partisipasi', 'Semifinal', 'Juara', 'Prestasi Tinggi'];
+                                    return levels[value] || value;
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(34, 197, 94, 0.2)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: '#1f2937'
+                            },
+                            grid: {
+                                color: 'rgba(34, 197, 94, 0.2)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Lightbox functionality
+        function openLightbox(hobby) {
+            const lightbox = document.getElementById('lightbox');
+            const content = document.getElementById('lightbox-content');
+            
+            const hobbyContent = {
+                sport: '<div style="text-align: center; padding: 2rem;"><h3 style="color: var(--accent-green); margin-bottom: 1rem;">Dokumentasi Olahraga</h3><p>Foto latihan, video workout, jadwal latihan mingguan</p><div style="margin-top: 1rem; font-size: 4rem;">🏃‍♂️💪🏋️‍♂️</div></div>',
+                photo: '<div style="text-align: center; padding: 2rem;"><h3 style="color: var(--accent-green); margin-bottom: 1rem;">Portfolio Fotografi</h3><p>Galeri 10 foto terbaik, before-after editing</p><div style="margin-top: 1rem; font-size: 4rem;">📸🌅🏞️</div></div>',
+                design: '<div style="text-align: center; padding: 2rem;"><h3 style="color: var(--accent-green); margin-bottom: 1rem;">Karya Desain Grafis</h3><p>Mockup poster, ilustrasi, timelapse proses</p><div style="margin-top: 1rem; font-size: 4rem;">🎨🖼️✨</div></div>',
+                singing: '<div style="text-align: center; padding: 2rem;"><h3 style="color: var(--accent-green); margin-bottom: 1rem;">Rekaman Vokal</h3><p>Audio clip cover, video latihan vokal</p><div style="margin-top: 1rem; font-size: 4rem;">🎤🎵🎶</div></div>'
+            };
+            
+            content.innerHTML = hobbyContent[hobby];
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        // Download CV function
+        function downloadCV() {
+            alert('CV download akan tersedia setelah implementasi backend. Ini adalah demo interface.');
+        }
+
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Navigation functionality
+        function initNavigation() {
+            const navbar = document.getElementById('navbar');
+            const navToggle = document.getElementById('nav-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            // Mobile menu toggle
+            navToggle.addEventListener('click', function() {
+                navToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+
+            // Close mobile menu when clicking on a link
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                });
+            });
+
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                if (window.scrollY > 100) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            });
+
+            // Active section highlighting
+            const sections = document.querySelectorAll('section[id]');
+            const navObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Remove active class from all nav links
+                        navLinks.forEach(link => link.classList.remove('active'));
+                        
+                        // Add active class to current section's nav link
+                        const activeLink = document.querySelector(`[data-section="${entry.target.id}"]`);
+                        if (activeLink) {
+                            activeLink.classList.add('active');
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.3,
+                rootMargin: '-100px 0px -100px 0px'
+            });
+
+            sections.forEach(section => {
+                navObserver.observe(section);
+            });
+        }
+
+        // Custom Cursor
+        function initCustomCursor() {
+            const cursor = document.getElementById('cursor');
+            const cursorFollower = document.getElementById('cursor-follower');
+            
+            let mouseX = 0;
+            let mouseY = 0;
+            let followerX = 0;
+            let followerY = 0;
+
+            document.addEventListener('mousemove', function(e) {
+                mouseX = e.clientX;
+                mouseY = e.clientY;
+                
+                cursor.style.left = mouseX - 10 + 'px';
+                cursor.style.top = mouseY - 10 + 'px';
+            });
+
+            // Smooth follower animation
+            function animateFollower() {
+                followerX += (mouseX - followerX) * 0.1;
+                followerY += (mouseY - followerY) * 0.1;
+                
+                cursorFollower.style.left = followerX - 20 + 'px';
+                cursorFollower.style.top = followerY - 20 + 'px';
+                
+                requestAnimationFrame(animateFollower);
+            }
+            animateFollower();
+
+            // Cursor hover effects
+            const hoverElements = document.querySelectorAll('a, button, .bio-card, .hobby-card, .chart-container, .reflection-card, .nav-link');
+            
+            hoverElements.forEach(element => {
+                element.addEventListener('mouseenter', function() {
+                    cursor.style.transform = 'scale(1.5)';
+                    cursorFollower.style.transform = 'scale(1.2)';
+                    cursorFollower.style.borderColor = 'rgba(34, 197, 94, 0.6)';
+                });
+                
+                element.addEventListener('mouseleave', function() {
+                    cursor.style.transform = 'scale(1)';
+                    cursorFollower.style.transform = 'scale(1)';
+                    cursorFollower.style.borderColor = 'rgba(34, 197, 94, 0.3)';
+                });
+            });
+
+            // Hide cursor when leaving window
+            document.addEventListener('mouseleave', function() {
+                cursor.style.opacity = '0';
+                cursorFollower.style.opacity = '0';
+            });
+
+            document.addEventListener('mouseenter', function() {
+                cursor.style.opacity = '1';
+                cursorFollower.style.opacity = '1';
+            });
+        }
+
+        // Photo Upload Functionality
+        function initPhotoUpload() {
+            const photoUpload = document.getElementById('photo-upload');
+            const profileImg = document.getElementById('profile-img');
+            const placeholder = document.querySelector('.profile-placeholder');
+
+            photoUpload.addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        profileImg.src = e.target.result;
+                        profileImg.style.display = 'block';
+                        placeholder.style.display = 'none';
+                        
+                        // Save to localStorage
+                        localStorage.setItem('profilePhoto', e.target.result);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Load saved photo on page load
+            const savedPhoto = localStorage.getItem('profilePhoto');
+            if (savedPhoto) {
+                profileImg.src = savedPhoto;
+                profileImg.style.display = 'block';
+                placeholder.style.display = 'none';
+            }
+        }
+
+        // Translation System
+        const translations = {
+            id: {
+                'page-title': 'M. Shidqii Arsyada - Let Down',
+                'logo': 'M. SHIDQII',
+                'nav-home': '🏠 Beranda',
+                'nav-biodata': '👤 Biodata',
+                'nav-experience': '🏆 Prestasi',
+                'nav-vision': '🎯 Visi & Misi',
+                'nav-hobbies': '🎨 Hobi',
+                'nav-stats': '📊 Statistik',
+                'nav-religious': '🕌 Refleksi',
+                'current-lang': 'ID',
+                'lang-id': 'Indonesia',
+                'lang-en': 'English',
+                'lang-ar': 'العربية',
+                'lang-jv': 'Jawa',
+                'hero-name': 'M. SHIDQII ARSYADA',
+                'hero-subtitle': 'Sebuah halaman yang pecah lalu pulih — biodata & karya M. Shidqii Arsyada.',
+                'hero-cta': 'Masuk ke ruang fragile →',
+                'profile-placeholder-text': 'Upload Foto Profil',
+                'upload-btn': '📷',
+                'section-biodata': 'BIODATA',
+                'biodata-panel-1-title': 'Informasi Pribadi',
+                'biodata-h4-1': '👤 Identitas',
+                'info-name-strong': 'Nama:',
+                'info-name-text': 'M. Shidqii Arsyada',
+                'info-dob-strong': 'TTL:',
+                'info-dob-text': '15 Maret 2007',
+                'info-address-strong': 'Alamat:',
+                'info-address-text': 'Desa Samborejo RT/RW 15/5, Jalan Haji. Abdullah, Kabupaten Pekalongan, Provinsi Jawa Tengah',
+                'biodata-h4-2': '📞 Kontak',
+                'contact-phone-strong': 'Telepon',
+                'contact-phone-p': '+62 xxx-xxxx-xxxx',
+                'contact-email-strong': 'Email',
+                'contact-email-p': 'Alzarsi@gmail.com',
+                'biodata-panel-2-title': 'Pendidikan & Kemampuan',
+                'biodata-h4-3': '🎓 Riwayat Pendidikan',
+                'edu-year-1': '2015–2021',
+                'edu-school-1': 'MI Samborejo',
+                'edu-year-2': '2021–2024',
+                'edu-school-2': 'SMP N 1 Tirto',
+                'edu-year-3': '2024–Selesai',
+                'edu-school-3': 'SMK MA\'ARIF NU Tirto',
+                'biodata-h4-4': '🎨 Keahlian',
+                'skill-1-strong': 'Desain UI/UX',
+                'skill-1-p': 'Merancang antarmuka pengguna yang intuitif dan menarik',
+                'skill-2-strong': 'Desain Grafis',
+                'skill-2-p': 'Membuat poster, ilustrasi, dan konten visual kreatif',
+                'biodata-h4-5': '🎯 Cita-cita',
+                'dream-strong': 'Programmer',
+                'dream-p': 'Menjadi seorang programmer handal yang dapat menciptakan solusi teknologi inovatif untuk membantu masyarakat dan berkontribusi dalam perkembangan dunia digital.',
+                'section-experience': 'RIWAYAT HIDUP & PENGALAMAN',
+                'story-card-title': '📖 Perjalanan Hidup: Dari Pendiam Menuju Berani',
+                'story-para1': 'Lahir dan tumbuh di desa Samborejo yang asri, saya adalah anak yang cukup pendiam dan penakut. Di masa kecil, berbicara di depan orang banyak terasa seperti mimpi buruk. Suara saya sering bergetar ketika diminta membaca di kelas, dan saya lebih memilih duduk di pojok belakang daripada menjadi pusat perhatian.',
+                'story-para2': 'Namun, hidup mulai mengajarkan saya untuk melangkah keluar dari zona nyaman. Di SD, meski dengan tangan berkeringat dan jantung berdebar, saya memberanikan diri mengikuti lomba cerdas cermat. Kejutan besar datang ketika berhasil meraih juara 3! Prestasi kecil itu menjadi benih kepercayaan diri pertama. Tahun berikutnya, saya kembali mencoba - kali ini di lomba adzan, dan alhamdulillah meraih juara 2.',
+                'story-para3': 'Masa SMP menjadi periode transisi yang menantang. Rasa gugup masih sering muncul, terutama saat presentasi atau berbicara di forum. Namun, saya mulai belajar bahwa keberanian bukan berarti tidak takut, melainkan tetap melangkah meski takut. Perlahan, saya mulai mengangkat tangan untuk menjawab pertanyaan guru, ikut diskusi kelas, bahkan memberanikan diri mengikuti lomba cerdas cermat dan olimpiade sains meski tidak menang.',
+                'story-para4': 'Titik balik terbesar terjadi ketika masuk SMK MA\'ARIF NU Tirto. Dengan tekad bulat untuk berubah, saya memberanikan diri mendaftar Paskibra - sesuatu yang tidak pernah terbayangkan oleh diri saya yang dulu. Latihan baris-berbaris, komando dengan suara lantang, dan tanggung jawab mengibarkan bendera merah putih mengajarkan saya arti disiplin dan keberanian sejati.',
+                'story-para5': 'Dari situ, pintu-pintu baru terbuka. Saya bergabung dengan OSIS, aktif di IPNU, bahkan berani terlibat sebagai panitia berbagai kegiatan desa. Setiap langkah kecil membangun kepercayaan diri yang lebih besar. Anak yang dulu takut berbicara, kini berani memimpin rapat, mengorganisir acara, dan bahkan berbagi ide-ide kreatif.',
+                'story-para6': 'Perjalanan ini mengajarkan saya bahwa setiap orang memiliki potensi untuk berubah dan berkembang. Yang dibutuhkan hanyalah keberanian untuk mengambil langkah pertama, meski kecil dan penuh ketakutan. Dari anak pendiam di desa Samborejo, saya belajar bahwa keberanian adalah otot yang semakin kuat jika terus dilatih.',
+                'exp-cards-title': '🏆 Pengalaman Organisasi & Kegiatan',
+                'exp-card-1-title': 'Paskibra SMK',
+                'exp-card-1-p': 'Mengikuti kegiatan Pasukan Pengibar Bendera di SMK MA\'ARIF NU Tirto. Kegiatan ini menjadi titik balik dalam membangun keberanian dan kedisiplinan. Dari yang awalnya takut berbaris di depan, kini mampu memimpin barisan dan mengibarkan bendera dengan penuh kebanggaan. Melatih kedisiplinan, tanggung jawab, dan rasa nasionalisme.',
+                'exp-card-2-title': 'OSIS SMK',
+                'exp-card-2-p': 'Aktif dalam organisasi siswa intra sekolah, berkontribusi dalam berbagai kegiatan dan program sekolah. Pengalaman di OSIS mengajarkan cara berorganisasi, memimpin tim, dan mengkoordinir berbagai acara sekolah. Dari yang dulu takut berpendapat, kini berani mengusulkan ide-ide kreatif untuk kemajuan sekolah.',
+                'exp-card-3-title': 'IPNU (Ikatan Pelajar Nahdlatul Ulama)',
+                'exp-card-3-p': 'Bergabung dengan Ikatan Pelajar Nahdlatul Ulama, mengembangkan jiwa kepemimpinan dan sosial. Kegiatan di IPNU memperkuat nilai-nilai keagamaan sekaligus mengasah kemampuan berorganisasi. Terlibat dalam berbagai kegiatan dakwah, sosial, dan pengembangan diri yang memperluas wawasan dan jaringan pertemanan.',
+                'exp-card-4-title': 'Panitia Kegiatan Desa',
+                'exp-card-4-p': 'Terlibat dalam kegiatan kemasyarakatan di tingkat desa Samborejo, membantu berbagai acara dan program desa. Pengalaman ini mengajarkan pentingnya gotong royong dan kepedulian terhadap masyarakat. Dari yang dulu hanya menjadi penonton, kini aktif sebagai panitia yang membantu mensukseskan berbagai acara tradisional dan keagamaan di desa.',
+                'section-vision': 'VISI & MISI',
+                'vision-text': 'Menjadi pribadi kreatif dan inspiratif melalui karya digital, teknologi, serta kehidupan yang sehat dan berkarakter.',
+                'mission-item-1': 'Mengasah keterampilan desain, fotografi, dan teknologi informasi.',
+                'mission-item-2': 'Menjaga kesehatan tubuh dengan olahraga rutin.',
+                'mission-item-3': 'Membuat karya digital yang bermanfaat dan inspiratif.',
+                'mission-item-4': 'Menjalani hidup dengan disiplin, tanggung jawab, dan budi pekerti.',
+                'section-motto': 'MOTO & MOTIVASI',
+                'motto-1': '“Langkahmu berhenti, tapi bumi tetap menari.”',
+                'motto-2': '“Kegagalan tak melahirkan keberhasilan, tapi ia memaksa kita untuk menjemputnya.”',
+                'section-hobbies': 'HOBI & DOKUMENTASI',
+                'hobby-1-title': 'Berolahraga',
+                'hobby-1-p': 'Rutinitas olahraga menambah energi dan menjaga fokus belajar. Biasanya saya melakukan latihan kardio ringan, push-up, dan latihan kekuatan tubuh bagian atas.',
+                'hobby-2-title': 'Fotografi',
+                'hobby-2-p': 'Mencari frame dalam keseharian — dari lanskap desa hingga potret teman. Editing dilakukan di Lightroom/Photoshop.',
+                'hobby-3-title': 'Desain Grafis',
+                'hobby-3-p': 'Membuat poster, ilustrasi, dan template. Bekerja dengan Adobe/Clip Studio/Procreate atau aplikasi mobile.',
+                'hobby-4-title': 'Bernyanyi',
+                'hobby-4-p': 'Latihan vokal untuk menjaga pitch & pernapasan. Sering merekam cover singkat sebagai latihan.',
+                'section-stats': 'KEGIATAN & ANALISIS STATISTIK',
+                'chart-1-title': 'Frekuensi Kegiatan Mingguan',
+                'chart-2-title': 'Proporsi Waktu per Minggu',
+                'chart-3-title': 'Timeline Prestasi',
+                'analysis-text-h3': 'Insight Analisis',
+                'analysis-text-p1': 'Waktu mingguan menunjukkan desain & belajar mendominasi dengan total 42 jam per minggu. Olahraga konsisten 4 kali seminggu menunjukkan keseimbangan aktivitas fisik & kreatif. Fotografi dan bernyanyi menjadi outlet kreatif tambahan yang menyeimbangkan rutinitas akademik. Timeline prestasi menunjukkan konsistensi partisipasi dalam kompetisi sejak SD hingga SMK, dengan puncak pencapaian di tahun 2024 sebagai Pelajar Penggerak dan Juara 3 Lomba Desain.',
+                'section-religious': 'REFLEKSI KEAGAMAAN',
+                'quote-arabic': 'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا',
+                'quote-translation': '“Dan barangsiapa bertakwa kepada Allah, niscaya Dia akan mengadakan baginya jalan keluar.”',
+                'quote-source': '- QS. At-Talaq: 2',
+                'reflection-card-1-h3': 'Kejujuran dalam Data',
+                'reflection-card-1-p': 'Dalam pembuatan website biodata ini, saya berkomitmen menyajikan informasi yang jujur dan akurat. Setiap data prestasi, pengalaman, dan statistik yang ditampilkan adalah nyata tanpa rekayasa. Allah SWT menyukai hamba yang jujur dalam perkataan dan perbuatan.',
+                'reflection-card-2-h3': 'Kreativitas sebagai Amanah',
+                'reflection-card-2-p': 'Kemampuan desain dan teknologi yang saya miliki adalah amanah dari Allah. Website ini dibuat dengan niat baik untuk berbagi karya dan inspirasi. Setiap elemen visual dirancang dengan mempertimbangkan nilai estetika yang tidak berlebihan dan tetap sopan.',
+                'reflection-card-3-h3': 'Teknologi untuk Kebaikan',
+                'reflection-card-3-p': 'Menggunakan teknologi web modern (HTML, CSS, JavaScript) sebagai sarana dakwah dan berbagi ilmu. Website ini menjadi media untuk menunjukkan bahwa teknologi dapat digunakan untuk hal-hal positif dan bermanfaat bagi orang lain.',
+                'reflection-card-4-h3': 'Tawadhu dalam Berkarya',
+                'reflection-card-4-p': 'Meskipun website ini menampilkan prestasi dan kemampuan, saya tetap menyadari bahwa semua pencapaian adalah karunia Allah. Tidak ada maksud untuk sombong atau riya, melainkan sebagai bentuk syukur dan motivasi untuk terus berkarya lebih baik.',
+                'analysis-text-2-h3': '🌐 Refleksi Pembuatan Website',
+                'website-reflection-1-strong': 'Proses Kreatif:',
+                'website-reflection-1-p': 'Website ini dibuat dengan memadukan teknologi modern dan nilai-nilai Islami. Setiap animasi, warna hijau alam, dan elemen visual dipilih untuk mencerminkan kesederhanaan dan keindahan ciptaan Allah.',
+                'website-reflection-2-strong': 'Integritas Data:',
+                'website-reflection-2-p': 'Semua informasi yang disajikan dalam website ini adalah fakta yang dapat dipertanggungjawabkan. Tidak ada data yang dilebih-lebihkan atau dikurangi, karena kejujuran adalah fondasi akhlak seorang muslim.',
+                'website-reflection-3-strong': 'Manfaat untuk Sesama:',
+                'website-reflection-3-p': 'Website ini tidak hanya sebagai portofolio pribadi, tetapi juga sebagai inspirasi bagi teman-teman yang ingin belajar web development. Kode yang dibuat menggunakan teknologi terbuka yang dapat dipelajari siapa saja.',
+                'website-reflection-4-strong': 'Niat Ibadah:',
+                'website-reflection-4-p': 'Setiap baris kode ditulis dengan niat bahwa ilmu teknologi ini akan bermanfaat dan menjadi ladang pahala. Semoga karya ini menjadi amal jariyah yang terus mengalir manfaatnya.',
+                'doa-section-h3': 'Doa & Harapan untuk Karya Digital',
+                'doa-arabic': 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',
+                'doa-translation': '“Ya Tuhan kami, berilah kami kebaikan di dunia dan kebaikan di akhirat, dan peliharalah kami dari siksa neraka.”',
+                'doa-reflection': 'Semoga website ini dan setiap karya digital yang saya buat selalu dalam ridho Allah SWT. Mudah-mudahan teknologi yang saya pelajari dapat menjadi sarana untuk berbuat kebaikan, menyebarkan ilmu yang bermanfaat, dan menjadi bekal di akhirat kelak. Aamiin ya rabbal alamiin.',
+                'contact-footer-p': 'Kontak: ',
+                'contact-footer-email': 'shidqii.arsyada@email.com',
+                'download-cv-btn': 'Download CV',
+                'footer-copyright': '© 2024 M. Shidqii Arsyada - Inspired by "Let Down" Radiohead'
+            },
+            en: {
+                'page-title': 'M. Shidqii Arsyada - Let Down',
+                'logo': 'M. SHIDQII',
+                'nav-home': '🏠 Home',
+                'nav-biodata': '👤 Profile',
+                'nav-experience': '🏆 Achievements',
+                'nav-vision': '🎯 Vision & Mission',
+                'nav-hobbies': '🎨 Hobbies',
+                'nav-stats': '📊 Statistics',
+                'nav-religious': '🕌 Reflection',
+                'current-lang': 'EN',
+                'lang-id': 'Indonesia',
+                'lang-en': 'English',
+                'lang-ar': 'Arabic',
+                'lang-jv': 'Javanese',
+                'hero-name': 'M. SHIDQII ARSYADA',
+                'hero-subtitle': 'A page that breaks and heals — biography & works of M. Shidqii Arsyada.',
+                'hero-cta': 'Enter the fragile space →',
+                'profile-placeholder-text': 'Upload Profile Photo',
+                'upload-btn': '📷',
+                'section-biodata': 'PROFILE',
+                'biodata-panel-1-title': 'Personal Information',
+                'biodata-h4-1': '👤 Identity',
+                'info-name-strong': 'Name:',
+                'info-name-text': 'M. Shidqii Arsyada',
+                'info-dob-strong': 'D.o.B:',
+                'info-dob-text': 'March 15, 2007',
+                'info-address-strong': 'Address:',
+                'info-address-text': 'Samborejo Village RT/RW 15/5, Haji. Abdullah Street, Pekalongan Regency, Central Java Province',
+                'biodata-h4-2': '📞 Contact',
+                'contact-phone-strong': 'Phone',
+                'contact-phone-p': '+62 xxx-xxxx-xxxx',
+                'contact-email-strong': 'Email',
+                'contact-email-p': 'Alzarsi@gmail.com',
+                'biodata-panel-2-title': 'Education & Skills',
+                'biodata-h4-3': '🎓 Education History',
+                'edu-year-1': '2015–2021',
+                'edu-school-1': 'MI Samborejo',
+                'edu-year-2': '2021–2024',
+                'edu-school-2': 'SMP N 1 Tirto',
+                'edu-year-3': '2024–Present',
+                'edu-school-3': 'SMK MA\'ARIF NU Tirto',
+                'biodata-h4-4': '🎨 Skills',
+                'skill-1-strong': 'UI/UX Design',
+                'skill-1-p': 'Designing intuitive and attractive user interfaces',
+                'skill-2-strong': 'Graphic Design',
+                'skill-2-p': 'Creating posters, illustrations, and creative visual content',
+                'biodata-h4-5': '🎯 Ambition',
+                'dream-strong': 'Programmer',
+                'dream-p': 'To become a skilled programmer who can create innovative technological solutions to help people and contribute to the development of the digital world.',
+                'section-experience': 'LIFE JOURNEY & EXPERIENCE',
+                'story-card-title': '📖 A Life Journey: From Quiet to Brave',
+                'story-para1': 'Born and raised in the serene village of Samborejo, I was a rather quiet and timid child. In my younger years, speaking in front of a crowd felt like a nightmare. My voice would often tremble when asked to read in class, and I preferred sitting in the back corner rather than being the center of attention.',
+                'story-para2': 'However, life began to teach me to step out of my comfort zone. In elementary school, despite sweating palms and a pounding heart, I dared to participate in a quiz bowl competition. It was a huge surprise when I managed to win third place! That small achievement became the first seed of self-confidence. The following year, I tried again - this time in the Adhan competition, and praise be to Allah, I won second place.',
+                'story-para3': 'Junior high school was a challenging transitional period. Nervousness still often appeared, especially during presentations or speaking in forums. But, I began to learn that bravery does not mean not being afraid, but rather continuing to move forward despite the fear. Slowly, I started raising my hand to answer teacher questions, joining class discussions, and even daring to participate in quiz bowl and science olympiads, even if I didn\'t win.',
+                'story-para4': 'The biggest turning point came when I entered SMK MA\'ARIF NU Tirto. With a firm determination to change, I dared to join Paskibra - something I never would have imagined myself doing. The drills, loud commands, and the responsibility of raising the red and white flag taught me the meaning of true discipline and courage.',
+                'story-para5': 'From there, new doors opened. I joined the student council (OSIS), was active in IPNU, and even had the courage to get involved as a committee member for various village activities. Each small step built greater self-confidence. The child who was once afraid to speak is now brave enough to lead meetings, organize events, and even share creative ideas.',
+                'story-para6': 'This journey taught me that everyone has the potential to change and grow. All it takes is the courage to take the first step, even if it\'s small and filled with fear. From a quiet child in Samborejo village, I learned that courage is a muscle that gets stronger with continuous practice.',
+                'exp-cards-title': '🏆 Organizational & Activity Experience',
+                'exp-card-1-title': 'Paskibra (Flag-raising troop)',
+                'exp-card-1-p': 'Participated in the Flag-raising Troop at SMK MA\'ARIF NU Tirto. This activity became a turning point in building courage and discipline. From initially being afraid to march at the front, I am now able to lead a troop and raise the flag with full pride. It trained me in discipline, responsibility, and a sense of nationalism.',
+                'exp-card-2-title': 'OSIS (Student Council)',
+                'exp-card-2-p': 'Active in the intra-school student organization, contributing to various school activities and programs. The experience in OSIS taught me how to organize, lead a team, and coordinate various school events. From once being afraid to voice an opinion, I now dare to propose creative ideas for the school\'s progress.',
+                'exp-card-3-title': 'IPNU (Nahdlatul Ulama Student Association)',
+                'exp-card-3-p': 'Joined the Nahdlatul Ulama Student Association, developing leadership and social skills. Activities in IPNU strengthened religious values while honing organizational abilities. Involved in various preaching, social, and self-development activities that broadened my perspective and friendship network.',
+                'exp-card-4-title': 'Village Activity Committee',
+                'exp-card-4-p': 'Involved in community activities at the village level in Samborejo, assisting with various village events and programs. This experience taught me the importance of mutual cooperation and care for the community. From once being a mere spectator, I am now an active committee member who helps make various traditional and religious events in the village successful.',
+                'section-vision': 'VISION & MISSION',
+                'vision-text': 'To be a creative and inspiring individual through digital works, technology, and a healthy and character-filled life.',
+                'mission-item-1': 'Hone skills in design, photography, and information technology.',
+                'mission-item-2': 'Maintain physical health with a regular exercise routine.',
+                'mission-item-3': 'Create digital works that are beneficial and inspiring.',
+                'mission-item-4': 'Live a life with discipline, responsibility, and good manners.',
+                'section-motto': 'MOTTO & MOTIVATION',
+                'motto-1': '“Your steps stop, but the earth continues to dance.”',
+                'motto-2': '“Failure does not beget success, but it forces us to pursue it.”',
+                'section-hobbies': 'HOBBIES & DOCUMENTATION',
+                'hobby-1-title': 'Exercising',
+                'hobby-1-p': 'An exercise routine adds energy and maintains study focus. I usually do light cardio, push-ups, and upper body strength training.',
+                'hobby-2-title': 'Photography',
+                'hobby-2-p': 'Searching for frames in everyday life—from village landscapes to portraits of friends. Editing is done in Lightroom/Photoshop.',
+                'hobby-3-title': 'Graphic Design',
+                'hobby-3-p': 'Creating posters, illustrations, and templates. Working with Adobe/Clip Studio/Procreate or mobile apps.',
+                'hobby-4-title': 'Singing',
+                'hobby-4-p': 'Vocal practice to maintain pitch & breathing. Often recording short covers as practice.',
+                'section-stats': 'ACTIVITIES & STATISTICAL ANALYSIS',
+                'chart-1-title': 'Weekly Activity Frequency',
+                'chart-2-title': 'Weekly Time Proportion',
+                'chart-3-title': 'Achievement Timeline',
+                'analysis-text-h3': 'Analytical Insights',
+                'analysis-text-p1': 'Weekly time shows that design & studying dominate with a total of 42 hours per week. Consistent exercise 4 times a week shows a balance of physical and creative activities. Photography and singing are additional creative outlets that balance the academic routine. The achievement timeline shows consistent participation in competitions from elementary school to vocational high school, with peak achievements in 2024 as a Student Mover and 3rd Place in a Design Competition.',
+                'section-religious': 'RELIGIOUS REFLECTION',
+                'quote-arabic': 'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا',
+                'quote-translation': '“And whoever fears Allah—He will make for him a way out.”',
+                'quote-source': '- Quran, At-Talaq: 2',
+                'reflection-card-1-h3': 'Honesty in Data',
+                'reflection-card-1-p': 'In creating this personal website, I am committed to presenting honest and accurate information. All achievement data, experience, and statistics displayed are real without exaggeration. Allah SWT loves a servant who is honest in words and deeds.',
+                'reflection-card-2-h3': 'Creativity as a Trust',
+                'reflection-card-2-p': 'My design and technology skills are a trust from Allah. This website was created with the good intention of sharing works and inspiration. Every visual element is designed with an eye for aesthetics that are not excessive and remain respectful.',
+                'reflection-card-3-h3': 'Technology for Good',
+                'reflection-card-3-p': 'Using modern web technology (HTML, CSS, JavaScript) as a means of spreading good and sharing knowledge. This website serves as a medium to show that technology can be used for positive and beneficial things for others.',
+                'reflection-card-4-h3': 'Humility in Work',
+                'reflection-card-4-p': 'Although this website showcases achievements and abilities, I remain aware that all accomplishments are a gift from Allah. There is no intention of arrogance or showing off, but rather as a form of gratitude and motivation to continue creating better work.',
+                'analysis-text-2-h3': '🌐 Website Creation Reflection',
+                'website-reflection-1-strong': 'Creative Process:',
+                'website-reflection-1-p': 'This website was created by combining modern technology with Islamic values. Every animation, the natural green colors, and visual elements were chosen to reflect the simplicity and beauty of Allah\'s creation.',
+                'website-reflection-2-strong': 'Data Integrity:',
+                'website-reflection-2-p': 'All information presented on this website is factual and can be accounted for. No data is exaggerated or understated, because honesty is the foundation of a Muslim\'s character.',
+                'website-reflection-3-strong': 'Benefit to Others:',
+                'website-reflection-3-p': 'This website is not only a personal portfolio but also an inspiration for friends who want to learn web development. The code is made using open technology that anyone can learn.',
+                'website-reflection-4-strong': 'Intention for Worship:',
+                'website-reflection-4-p': 'Every line of code was written with the intention that this technological knowledge would be beneficial and a source of reward. May this work be an ongoing charity that continues to flow with benefits.',
+                'doa-section-h3': 'Prayer & Hope for Digital Works',
+                'doa-arabic': 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',
+                'doa-translation': '“Our Lord, give us in this world [that which is] good and in the Hereafter [that which is] good and protect us from the punishment of the Fire.”',
+                'doa-reflection': 'May this website and every digital work I create always be under the grace of Allah SWT. Hopefully, the technology I learn can be a means to do good, spread beneficial knowledge, and be a provision for the hereafter. Aamiin ya rabbal alamiin.',
+                'contact-footer-p': 'Contact: ',
+                'contact-footer-email': 'shidqii.arsyada@email.com',
+                'download-cv-btn': 'Download CV',
+                'footer-copyright': '© 2024 M. Shidqii Arsyada - Inspired by "Let Down" Radiohead'
+            },
+            ar: {
+                'page-title': 'م. صدقي أرسيادا - خيبة أمل',
+                'logo': 'م. صدقي',
+                'nav-home': '🏠 الرئيسية',
+                'nav-biodata': '👤 السيرة الذاتية',
+                'nav-experience': '🏆 الإنجازات',
+                'nav-vision': '🎯 الرؤية والرسالة',
+                'nav-hobbies': '🎨 الهوايات',
+                'nav-stats': '📊 الإحصائيات',
+                'nav-religious': '🕌 التأمل',
+                'current-lang': 'AR',
+                'lang-id': 'الإندونيسية',
+                'lang-en': 'الإنجليزية',
+                'lang-ar': 'العربية',
+                'lang-jv': 'الجاوية',
+                'hero-name': 'م. صدقي أرسيادا',
+                'hero-subtitle': 'صفحة تنكسر ثم تشفى — سيرة ذاتية وأعمال م. صدقي أرسيادا.',
+                'hero-cta': 'ادخل إلى المساحة الهشة ←',
+                'profile-placeholder-text': 'تحميل صورة شخصية',
+                'upload-btn': '📷',
+                'section-biodata': 'السيرة الذاتية',
+                'biodata-panel-1-title': 'المعلومات الشخصية',
+                'biodata-h4-1': '👤 الهوية',
+                'info-name-strong': 'الاسم:',
+                'info-name-text': 'م. صدقي أرسيادا',
+                'info-dob-strong': 'تاريخ الميلاد:',
+                'info-dob-text': '15 مارس 2007',
+                'info-address-strong': 'العنوان:',
+                'info-address-text': 'قرية سامبورجو RT/RW 15/5، شارع الحاج عبد الله، مقاطعة بيكالونجان، إقليم جاوة الوسطى',
+                'biodata-h4-2': '📞 الاتصال',
+                'contact-phone-strong': 'الهاتف',
+                'contact-phone-p': '+62 xxx-xxxx-xxxx',
+                'contact-email-strong': 'البريد الإلكتروني',
+                'contact-email-p': 'Alzarsi@gmail.com',
+                'biodata-panel-2-title': 'التعليم والمهارات',
+                'biodata-h4-3': '🎓 السيرة التعليمية',
+                'edu-year-1': '2015–2021',
+                'edu-school-1': 'MI سامبورجو',
+                'edu-year-2': '2021–2024',
+                'edu-school-2': 'SMP N 1 تيرتو',
+                'edu-year-3': '2024–الآن',
+                'edu-school-3': 'SMK MA\'ARIF NU تيرتو',
+                'biodata-h4-4': '🎨 المهارات',
+                'skill-1-strong': 'تصميم واجهة المستخدم/تجربة المستخدم',
+                'skill-1-p': 'تصميم واجهات مستخدم بديهية وجذابة',
+                'skill-2-strong': 'التصميم الجرافيكي',
+                'skill-2-p': 'إنشاء الملصقات والرسوم التوضيحية والمحتوى المرئي الإبداعي',
+                'biodata-h4-5': '🎯 الطموح',
+                'dream-strong': 'مبرمج',
+                'dream-p': 'أن أصبح مبرمجاً ماهراً يمكنه إنشاء حلول تكنولوجية مبتكرة لمساعدة الناس والمساهمة في تطوير العالم الرقمي.',
+                'section-experience': 'رحلة الحياة والخبرة',
+                'story-card-title': '📖 رحلة حياة: من الخجل إلى الشجاعة',
+                'story-para1': 'وُلدت وترعرعت في قرية سامبورجو الهادئة، وكنت طفلاً خجولاً ومتردداً. في طفولتي، كان التحدث أمام الجمهور أشبه بكابوس. كان صوتي يرتجف عندما يُطلب مني القراءة في الفصل، وكنت أفضل الجلوس في الزاوية الخلفية بدلاً من أن أكون محور الاهتمام.',
+                'story-para2': 'لكن الحياة بدأت تعلمني كيفية الخروج من منطقة الراحة. في المرحلة الابتدائية، على الرغم من تعرق يدي وخفقان قلبي، تجرأت وشاركت في مسابقة quiz bowl. كانت مفاجأة كبيرة عندما تمكنت من الفوز بالمركز الثالث! أصبح هذا الإنجاز الصغير هو البذرة الأولى للثقة بالنفس. في العام التالي، حاولت مرة أخرى - هذه المرة في مسابقة الأذان، ولله الحمد، فزت بالمركز الثاني.',
+                'story-para3': 'كانت المرحلة الإعدادية فترة انتقالية مليئة بالتحديات. كان الشعور بالتوتر لا يزال يظهر كثيراً، خاصةً أثناء العروض التقديمية أو التحدث في المنتديات. ولكنني بدأت أتعلم أن الشجاعة لا تعني عدم الخوف، بل تعني المضي قدماً على الرغم من الخوف. شيئاً فشيئاً، بدأت أرفع يدي للإجابة على أسئلة المعلمين، وأشارك في المناقشات الصفية، بل وتجرأت على المشاركة في مسابقات quiz bowl والأولمبياد العلمي حتى لو لم أفز.',
+                'story-para4': 'حدثت أكبر نقطة تحول عندما التحقت بمدرسة SMK MA\'ARIF NU تيرتو. بعزيمة ثابتة على التغيير، تجرأت على الانضمام إلى Paskibra (فرقة رفع العلم) - وهو شيء لم أتخيله أبداً. التدريبات الصارمة، والأوامر بصوت عالٍ، ومسؤولية رفع العلم الأحمر والأبيض علمتني معنى الانضباط الحقيقي والشجاعة.',
+                'story-para5': 'منذ ذلك الحين، فُتحت أبواب جديدة. انضممت إلى مجلس الطلاب (OSIS)، وكنت نشطاً في IPNU، بل وتجرأت على المشاركة كعضو في لجان الأنشطة القروية المختلفة. كل خطوة صغيرة بنت ثقة أكبر بالنفس. الطفل الذي كان يخشى الكلام، أصبح الآن يجرؤ على قيادة الاجتماعات، وتنظيم الفعاليات، وحتى مشاركة الأفكار الإبداعية.',
+                'story-para6': 'علمتني هذه الرحلة أن لكل شخص القدرة على التغيير والنمو. كل ما يتطلبه الأمر هو الشجاعة لاتخاذ الخطوة الأولى، مهما كانت صغيرة ومليئة بالخوف. من طفل خجول في قرية سامبورجو، تعلمت أن الشجاعة هي عضلة تزداد قوة بالتدريب المستمر.',
+                'exp-cards-title': '🏆 الخبرة التنظيمية والأنشطة',
+                'exp-card-1-title': 'فرقة رفع العلم بالمدرسة',
+                'exp-card-1-p': 'شاركت في فرقة رفع العلم في SMK MA\'ARIF NU تيرتو. كان هذا النشاط نقطة تحول في بناء الشجاعة والانضباط. فمن كنت أخشى الوقوف في الصفوف الأمامية، أصبحت الآن قادراً على قيادة الفرقة ورفع العلم بفخر كامل. لقد دربت الانضباط والمسؤولية والشعور بالوطنية.',
+                'exp-card-2-title': 'مجلس الطلاب بالمدرسة',
+                'exp-card-2-p': 'كنت نشطاً في تنظيم الطلاب داخل المدرسة، مساهماً في مختلف الأنشطة والبرامج المدرسية. علمتني الخبرة في مجلس الطلاب كيفية التنظيم وقيادة فريق وتنسيق الفعاليات المختلفة. فمن كنت أخشى إبداء رأيي، أصبحت الآن أجرؤ على اقتراح أفكار إبداعية لتقدم المدرسة.',
+                'exp-card-3-title': 'جمعية طلاب نهضة العلماء',
+                'exp-card-3-p': 'انضممت إلى جمعية طلاب نهضة العلماء، مما ساهم في تطوير القيادة والمهارات الاجتماعية. عززت الأنشطة في الجمعية القيم الدينية مع صقل القدرات التنظيمية. شاركت في مختلف أنشطة الدعوة والمجتمع والتطوير الذاتي التي وسعت آفاقي وشبكة صداقاتي.',
+                'exp-card-4-title': 'لجنة الأنشطة القروية',
+                'exp-card-4-p': 'شاركت في الأنشطة المجتمعية على مستوى قرية سامبورجو، مساهماً في مختلف الفعاليات والبرامج القروية. علمتني هذه الخبرة أهمية العمل الجماعي والاهتمام بالمجتمع. فمن كنت مجرد متفرج، أصبحت الآن عضواً نشطاً في اللجنة يساعد على نجاح مختلف الفعاليات التقليدية والدينية في القرية.',
+                'section-vision': 'الرؤية والرسالة',
+                'vision-text': 'أن أكون شخصية مبدعة وملهمة من خلال الأعمال الرقمية والتكنولوجيا، وأن أعيش حياة صحية ومليئة بالقيم.',
+                'mission-item-1': 'صقل المهارات في التصميم والتصوير الفوتوغرافي وتكنولوجيا المعلومات.',
+                'mission-item-2': 'الحفاظ على صحة الجسم من خلال ممارسة الرياضة بانتظام.',
+                'mission-item-3': 'إنشاء أعمال رقمية مفيدة وملهمة.',
+                'mission-item-4': 'عيش الحياة بانضباط ومسؤولية وأخلاق حميدة.',
+                'section-motto': 'الشعار والدافع',
+                'motto-1': '“تتوقف خطواتك، لكن الأرض لا تزال ترقص.”',
+                'motto-2': '“الفشل لا يولد النجاح، بل يجبرنا على السعي لتحقيقه.”',
+                'section-hobbies': 'الهوايات والتوثيق',
+                'hobby-1-title': 'ممارسة الرياضة',
+                'hobby-1-p': 'الروتين الرياضي يضيف الطاقة ويحافظ على التركيز في الدراسة. عادةً ما أقوم بتمارين الكارديو الخفيفة، وتمارين الضغط، وتمارين القوة للجزء العلوي من الجسم.',
+                'hobby-2-title': 'التصوير الفوتوغرافي',
+                'hobby-2-p': 'البحث عن إطارات في الحياة اليومية — من مناظر القرية إلى صور الأصدقاء. يتم التحرير في Lightroom/Photoshop.',
+                'hobby-3-title': 'التصميم الجرافيكي',
+                'hobby-3-p': 'إنشاء الملصقات والرسوم التوضيحية والقوالب. العمل باستخدام Adobe/Clip Studio/Procreate أو تطبيقات الهاتف المحمول.',
+                'hobby-4-title': 'الغناء',
+                'hobby-4-p': 'التدريب الصوتي للحفاظ على النبرة والتنفس. غالباً ما أقوم بتسجيل مقاطع صوتية قصيرة كتدريب.',
+                'section-stats': 'الأنشطة والتحليل الإحصائي',
+                'chart-1-title': 'تكرار الأنشطة الأسبوعية',
+                'chart-2-title': 'نسبة الوقت الأسبوعي',
+                'chart-3-title': 'الجدول الزمني للإنجازات',
+                'analysis-text-h3': 'رؤى تحليلية',
+                'analysis-text-p1': 'يظهر الوقت الأسبوعي أن التصميم والدراسة يهيمنان بإجمالي 42 ساعة في الأسبوع. التمارين الرياضية المتسقة 4 مرات في الأسبوع تظهر توازناً بين الأنشطة البدنية والإبداعية. التصوير الفوتوغرافي والغناء هما منفذان إبداعيان إضافيان يوازنان الروتين الأكاديمي. يظهر الجدول الزمني للإنجازات المشاركة المستمرة في المسابقات منذ المرحلة الابتدائية حتى المرحلة الثانوية المهنية، مع ذروة الإنجازات في عام 2024 كطالب حركي ومركز ثالث في مسابقة تصميم.',
+                'section-religious': 'التأمل الديني',
+                'quote-arabic': 'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا',
+                'quote-translation': '“ومن يتق الله يجعل له مخرجاً.”',
+                'quote-source': '- سورة الطلاق: 2',
+                'reflection-card-1-h3': 'الصدق في البيانات',
+                'reflection-card-1-p': 'في إعداد هذا الموقع الشخصي، أنا ملتزم بتقديم معلومات صادقة ودقيقة. جميع بيانات الإنجازات والخبرات والإحصائيات المعروضة حقيقية دون تلاعب. الله سبحانه وتعالى يحب العبد الصادق في قوله وفعله.',
+                'reflection-card-2-h3': 'الإبداع كأمانة',
+                'reflection-card-2-p': 'إن مهاراتي في التصميم والتكنولوجيا هي أمانة من الله. تم إنشاء هذا الموقع بنية حسنة لمشاركة الأعمال والإلهام. تم تصميم كل عنصر مرئي مع مراعاة الجماليات التي ليست مفرطة وتبقى محترمة.',
+                'reflection-card-3-h3': 'التكنولوجيا للخير',
+                'reflection-card-3-p': 'استخدام تكنولوجيا الويب الحديثة (HTML، CSS، JavaScript) كوسيلة للدعوة ومشاركة المعرفة. يصبح هذا الموقع وسيلة لإظهار أنه يمكن استخدام التكنولوجيا لأشياء إيجابية ومفيدة للآخرين.',
+                'reflection-card-4-h3': 'التواضع في العمل',
+                'reflection-card-4-p': 'على الرغم من أن هذا الموقع يعرض الإنجازات والقدرات، إلا أنني لا أزال مدركاً أن كل الإنجازات هي هبة من الله. لا يوجد أي نية للغرور أو الرياء، بل هو شكل من أشكال الشكر والدافع لمواصلة إنشاء أعمال أفضل.',
+                'analysis-text-2-h3': '🌐 تأمل في إنشاء الموقع',
+                'website-reflection-1-strong': 'العملية الإبداعية:',
+                'website-reflection-1-p': 'تم إنشاء هذا الموقع بدمج التكنولوجيا الحديثة مع القيم الإسلامية. تم اختيار كل حركة، وكل لون أخضر طبيعي، وكل عنصر مرئي ليعكس بساطة وجمال خلق الله.',
+                'website-reflection-2-strong': 'سلامة البيانات:',
+                'website-reflection-2-p': 'جميع المعلومات المقدمة في هذا الموقع هي وقائع يمكن تحمل مسؤوليتها. لا توجد بيانات مبالغ فيها أو منقوصة، لأن الصدق هو أساس أخلاق المسلم.',
+                'website-reflection-3-strong': 'المنفعة للآخرين:',
+                'website-reflection-3-p': 'هذا الموقع ليس مجرد محفظة شخصية، بل هو أيضاً إلهام للأصدقاء الذين يرغبون في تعلم تطوير الويب. تم إنشاء الكود باستخدام تكنولوجيا مفتوحة يمكن لأي شخص تعلمها.',
+                'website-reflection-4-strong': 'نية العبادة:',
+                'website-reflection-4-p': 'تمت كتابة كل سطر من الكود بنية أن يكون هذا العلم التكنولوجي مفيداً ومصدراً للثواب. آمل أن يكون هذا العمل صدقة جارية تستمر فوائدها في التدفق.',
+                'doa-section-h3': 'دعاء ورجاء للأعمال الرقمية',
+                'doa-arabic': 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',
+                'doa-translation': '“ربنا آتنا في الدنيا حسنة وفي الآخرة حسنة وقنا عذاب النار.”',
+                'doa-reflection': 'آمل أن يكون هذا الموقع وكل عمل رقمي أقوم به دائماً في رضا الله سبحانه وتعالى. نأمل أن تكون التكنولوجيا التي أتعلمها وسيلة لفعل الخير، ونشر المعرفة المفيدة، وتكون ذخراً لي في الآخرة. آمين يا رب العالمين.',
+                'contact-footer-p': 'الاتصال: ',
+                'contact-footer-email': 'shidqii.arsyada@email.com',
+                'download-cv-btn': 'تحميل السيرة الذاتية',
+                'footer-copyright': '© 2024 م. صدقي أرسيادا - مستوحى من "Let Down" Radiohead'
+            },
+            jv: {
+                'page-title': 'M. Shidqii Arsyada - Let Down',
+                'logo': 'M. SHIDQII',
+                'nav-home': '🏠 Omah',
+                'nav-biodata': '👤 Biodata',
+                'nav-experience': '🏆 Prestasi',
+                'nav-vision': '🎯 Visi & Misi',
+                'nav-hobbies': '🎨 Hobi',
+                'nav-stats': '📊 Statistik',
+                'nav-religious': '🕌 Refleksi',
+                'current-lang': 'JV',
+                'lang-id': 'Indonesia',
+                'lang-en': 'English',
+                'lang-ar': 'Arab',
+                'lang-jv': 'Jawa',
+                'hero-name': 'M. SHIDQII ARSYADA',
+                'hero-subtitle': 'Kaca sing pecah banjur waras maneh — biodata lan karya M. Shidqii Arsyada.',
+                'hero-cta': 'Mlebu ing papan rapuh →',
+                'profile-placeholder-text': 'Unggah Foto Profil',
+                'upload-btn': '📷',
+                'section-biodata': 'BIODATA',
+                'biodata-panel-1-title': 'Informasi Pribadi',
+                'biodata-h4-1': '👤 Identitas',
+                'info-name-strong': 'Jeneng:',
+                'info-name-text': 'M. Shidqii Arsyada',
+                'info-dob-strong': 'TTL:',
+                'info-dob-text': '15 Maret 2007',
+                'info-address-strong': 'Alamat:',
+                'info-address-text': 'Dusun Samborejo RT/RW 15/5, Jalan Haji. Abdullah, Kabupaten Pekalongan, Provinsi Jawa Tengah',
+                'biodata-h4-2': '📞 Kontak',
+                'contact-phone-strong': 'Telepon',
+                'contact-phone-p': '+62 xxx-xxxx-xxxx',
+                'contact-email-strong': 'Email',
+                'contact-email-p': 'Alzarsi@gmail.com',
+                'biodata-panel-2-title': 'Pendidikan & Kemampuan',
+                'biodata-h4-3': '🎓 Riwayat Pendidikan',
+                'edu-year-1': '2015–2021',
+                'edu-school-1': 'MI Samborejo',
+                'edu-year-2': '2021–2024',
+                'edu-school-2': 'SMP N 1 Tirto',
+                'edu-year-3': '2024–Selesai',
+                'edu-school-3': 'SMK MA\'ARIF NU Tirto',
+                'biodata-h4-4': '🎨 Keahlian',
+                'skill-1-strong': 'Desain UI/UX',
+                'skill-1-p': 'Ngrancang antarmuka pangguna sing intuitif lan menarik',
+                'skill-2-strong': 'Desain Grafis',
+                'skill-2-p': 'Nggawe poster, ilustrasi, lan konten visual kreatif',
+                'biodata-h4-5': '🎯 Cita-cita',
+                'dream-strong': 'Programmer',
+                'dream-p': 'Dadi programmer sing andal sing bisa nggawe solusi teknologi inovatif kanggo mbantu masyarakat lan nyumbang ing perkembangan dunia digital.',
+                'section-experience': 'PERJALANAN URIP & PENGALAMAN',
+                'story-card-title': '📖 Lelakon Urip: Saka Meneng Dadi Wani',
+                'story-para1': 'Lair lan gedhe ing dusun Samborejo sing asri, aku bocah sing rada meneng lan wedi. Nalika cilik, omongan ing ngarepe wong akeh kaya ngimpi elek. Suaraku asring gemeter nalika diutus maca ing kelas, lan luwih seneng lungguh ing pojok mburi tinimbang dadi pusat perhatian.',
+                'story-para2': 'Nanging, urip wiwit ngajari aku metu saka zona nyaman. Ing SD, sanajan tangan kringetan lan jantung deg-degan, aku wani melu lomba cerdas cermat. Kaget banget nalika berhasil menang juara 3! Prestasi cilik kuwi dadi wiwitan kapercayan diri. Taun sabanjure, aku nyoba maneh - wektu iki ing lomba adzan, lan alhamdulillah entuk juara 2.',
+                'story-para3': 'Masa SMP dadi periode transisi sing tantangan. Rasa gugup isih asring muncul, utamane nalika presentasi utawa omongan ing forum. Nanging, aku wiwit sinau yen wani iku dudu ora wedi, nanging tetep mlaku sanajan wedi. Alon-alon, aku wiwit ngangkat tangan kanggo njawab pitakon guru, melu diskusi kelas, malah wani melu lomba cerdas cermat lan olimpiade sains sanajan ora menang.',
+                'story-para4': 'Titik balik paling gedhe nalika mlebu SMK MA\'ARIF NU Tirto. Kanthi tekad sing kuat kanggo owah, aku wani daftar Paskibra - siji bab sing ora tau tak pikirake sadurunge. Latihan baris-berbaris, komando kanthi swara banter, lan tanggung jawab ngibarakake gendera abang putih ngajari aku makna disiplin lan wani sing sejati.',
+                'story-para5': 'Saka iku, lawang-lawang anyar mbukak. Aku gabung karo OSIS, aktif ing IPNU, malah wani dadi panitia macem-macem kegiatan desa. Saben langkah cilik mbangun kapercayan diri sing luwih gedhe. Bocah sing biyen wedi ngomong, saiki wani mimpin rapat, ngorganisir acara, lan malah nuduhake ide-ide kreatif.',
+                'story-para6': 'Lelakon iki ngajari aku yen saben wong duwe potensi kanggo owah lan berkembang. Sing dibutuhake mung wani njupuk langkah kapisan, sanajan cilik lan kebak rasa wedi. Saka bocah meneng ing dusun Samborejo, aku sinau yen wani iku otot sing saya kuat yen terus dilatih.',
+                'exp-cards-title': '🏆 Pengalaman Organisasi & Kegiatan',
+                'exp-card-1-title': 'Paskibra SMK',
+                'exp-card-1-p': 'Melu kegiatan Pasukan Pengibar Bendera ing SMK MA\'ARIF NU Tirto. Kegiatan iki dadi titik balik kanggo mbangun kapercayan diri lan disiplin. Saka sing biyen wedi baris ing ngarep, saiki bisa mimpin barisan lan ngibarakake gendera kanthi bangga. Ngatih disiplin, tanggung jawab, lan rasa nasionalisme.',
+                'exp-card-2-title': 'OSIS SMK',
+                'exp-card-2-p': 'Aktif ing organisasi siswa intra sekolah, nyumbang ing macem-macem kegiatan lan program sekolah. Pengalaman ing OSIS ngajari carane ngorganisir, mimpin tim, lan ngkoordinir macem-macem acara sekolah. Saka sing biyen wedi menehi pendapat, saiki wani ngusulake ide-ide kreatif kanggo kemajuan sekolah.',
+                'exp-card-3-title': 'IPNU (Ikatan Pelajar Nahdlatul Ulama)',
+                'exp-card-3-p': 'Gabung karo Ikatan Pelajar Nahdlatul Ulama, ngembangake jiwa kepemimpinan lan sosial. Kegiatan ing IPNU nguatake nilai-nilai agama lan ngasah kemampuan ngorganisir. Melu ing macem-macem kegiatan dakwah, sosial, lan pengembangan diri sing ngluasi wawasan lan jaringan pertemanan.',
+                'exp-card-4-title': 'Panitia Kegiatan Desa',
+                'exp-card-4-p': 'Melu ing kegiatan kemasyarakatan ing tingkat dusun Samborejo, mbantu macem-macem acara lan program desa. Pengalaman iki ngajari pentinge gotong royong lan kepedulian marang masyarakat. Saka sing biyen mung dadi penonton, saiki aktif dadi panitia sing mbantu nyuksesake macem-macem acara tradisional lan keagamaan ing desa.',
+                'section-vision': 'VISI & MISI',
+                'vision-text': 'Dadi pribadi sing kreatif lan inspiratif liwat karya digital, teknologi, lan urip sing sehat lan berkarakter.',
+                'mission-item-1': 'Ngembangake katrampilan desain, fotografi, lan teknologi informasi.',
+                'mission-item-2': 'Njaga kesehatan awak kanthi olahraga rutin.',
+                'mission-item-3': 'Nggawe karya digital sing migunani lan inspiratif.',
+                'mission-item-4': 'Nglakoni urip kanthi disiplin, tanggung jawab, lan budi pekerti.',
+                'section-motto': 'MOTO & MOTIVASI',
+                'motto-1': '“Langkahmu mandheg, nanging bumi tetep nari.”',
+                'motto-2': '“Kagagalan ora nglairake keberhasilan, nanging meksa kita njemput.”',
+                'section-hobbies': 'HOBI & DOKUMENTASI',
+                'hobby-1-title': 'Olahraga',
+                'hobby-1-p': 'Rutinitas olahraga nambah energi lan njaga fokus sinau. Biasane aku nindakake latihan kardio enteng, push-up, lan latihan kekuatan awak bagean ndhuwur.',
+                'hobby-2-title': 'Fotografi',
+                'hobby-2-p': 'Nggoleki frame ing saben dina — saka lanskap desa nganti potret kanca. Editing dilakoni ing Lightroom/Photoshop.',
+                'hobby-3-title': 'Desain Grafis',
+                'hobby-3-p': 'Nggawe poster, ilustrasi, lan template. Kerjane karo Adobe/Clip Studio/Procreate utawa aplikasi mobile.',
+                'hobby-4-title': 'Nyanyi',
+                'hobby-4-p': 'Latihan vokal kanggo njaga pitch & napas. Asring ngrekam cover singkat minangka latihan.',
+                'section-stats': 'KEGIATAN & ANALISIS STATISTIK',
+                'chart-1-title': 'Frekuensi Kegiatan Mingguan',
+                'chart-2-title': 'Proporsi Wektu saben Minggu',
+                'chart-3-title': 'Timeline Prestasi',
+                'analysis-text-h3': 'Wawasan Analisis',
+                'analysis-text-p1': 'Wektu mingguan nuduhake desain & sinau luwih dominan kanthi total 42 jam saben minggu. Olahraga konsisten 4 kali seminggu nuduhake keseimbangan aktivitas fisik & kreatif. Fotografi lan nyanyi dadi outlet kreatif tambahan sing ngimbangi rutinitas akademik. Timeline prestasi nuduhake konsistensi partisipasi ing kompetisi wiwit SD nganti SMK, kanthi puncak pencapaian ing taun 2024 minangka Pelajar Penggerak lan Juara 3 Lomba Desain.',
+                'section-religious': 'REFLEKSI AGAMA',
+                'quote-arabic': 'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا',
+                'quote-translation': '“Lan sapa sing takwa marang Allah, bakal diwenehi dalan metu.”',
+                'quote-source': '- QS. At-Talaq: 2',
+                'reflection-card-1-h3': 'Jujur ing Data',
+                'reflection-card-1-p': 'Ing nggawe website biodata iki, aku setya nyedhiyakake informasi sing jujur lan akurat. Saben data prestasi, pengalaman, lan statistik sing ditampilake iku nyata tanpa rekayasa. Allah SWT seneng karo hamba sing jujur ing ucapan lan tumindak.',
+                'reflection-card-2-h3': 'Kreativitas minangka Amanah',
+                'reflection-card-2-p': 'Kemampuan desain lan teknologi sing aku duweni iku amanah saka Allah. Website iki digawe kanthi niat apik kanggo nuduhake karya lan inspirasi. Saben elemen visual dirancang kanthi nimbang nilai estetika sing ora berlebihan lan tetep sopan.',
+                'reflection-card-3-h3': 'Teknologi kanggo Kebaikan',
+                'reflection-card-3-p': 'Nggunakake teknologi web modern (HTML, CSS, JavaScript) minangka sarana dakwah lan nuduhake ilmu. Website iki dadi media kanggo nuduhake yen teknologi bisa digunakake kanggo bab-bab sing positif lan migunani kanggo wong liya.',
+                'reflection-card-4-h3': 'Tawadhu ing Berkarya',
+                'reflection-card-4-p': 'Sanajan website iki nampilake prestasi lan kemampuan, aku tetep nyadari yen kabeh pencapaian iku anugrah saka Allah. Ora ana niat sombong utawa riya, nanging minangka wujud syukur lan motivasi kanggo terus berkarya luwih apik.',
+                'analysis-text-2-h3': '🌐 Refleksi Nggawe Website',
+                'website-reflection-1-strong': 'Proses Kreatif:',
+                'website-reflection-1-p': 'Website iki digawe kanthi nggabungake teknologi modern lan nilai-nilai Islami. Saben animasi, warna ijo alam, lan elemen visual dipilih kanggo nggambarake kesederhanaan lan kaendahan ciptaan Allah.',
+                'website-reflection-2-strong': 'Integritas Data:',
+                'website-reflection-2-p': 'Kabeh informasi sing disajikan ing website iki iku fakta sing bisa dipertanggungjawabake. Ora ana data sing dilebih-lebihkan utawa dikurangi, amarga kejujuran iku pondasi akhlak muslim.',
+                'website-reflection-3-strong': 'Manfaat kanggo Sesama:',
+                'website-reflection-3-p': 'Website iki ora mung minangka portofolio pribadi, nanging uga minangka inspirasi kanggo kanca-kanca sing pengin sinau web development. Kode sing digawe nggunakake teknologi terbuka sing bisa disinaoni sapa wae.',
+                'website-reflection-4-strong': 'Niat Ibadah:',
+                'website-reflection-4-p': 'Saben baris kode ditulis kanthi niat yen ilmu teknologi iki bakal migunani lan dadi ladang pahala. Muga-muga karya iki dadi amal jariyah sing terus mili manfaate.',
+                'doa-section-h3': 'Donga & Harapan kanggo Karya Digital',
+                'doa-arabic': 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',
+                'doa-translation': '“Ya Pangeran kita, paringana kita kabecikan ing donya lan kabecikan ing akhirat, lan peliharalah kita saka siksa neraka.”',
+                'doa-reflection': 'Muga-muga website iki lan saben karya digital sing aku gawe tansah ing ridho Allah SWT. Muga-muga teknologi sing tak sinau bisa dadi sarana kanggo nindakake kabecikan, nyebarake ilmu sing migunani, lan dadi bekal ing akhirat. Aamiin ya rabbal alamiin.',
+                'contact-footer-p': 'Kontak: ',
+                'contact-footer-email': 'shidqii.arsyada@email.com',
+                'download-cv-btn': 'Download CV',
+                'footer-copyright': '© 2024 M. Shidqii Arsyada - Inspired by "Let Down" Radiohead'
+            }
+        };
+
+        let currentLanguage = 'id';
+
+        function initLanguageSelector() {
+            const languageBtn = document.getElementById('language-btn');
+            const languageOptions = document.getElementById('language-options');
+            const languageOptionElements = document.querySelectorAll('.language-option');
+
+            // Toggle dropdown
+            languageBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                languageBtn.classList.toggle('active');
+                languageOptions.classList.toggle('active');
+            });
+
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function() {
+                languageBtn.classList.remove('active');
+                languageOptions.classList.remove('active');
+            });
+
+            // Language selection
+            languageOptionElements.forEach(option => {
+                option.addEventListener('click', function() {
+                    const selectedLang = this.getAttribute('data-lang');
+                    changeLanguage(selectedLang);
+                    
+                    // Update button display
+                    updateLanguageButton(selectedLang);
+                    
+                    // Close dropdown
+                    languageBtn.classList.remove('active');
+                    languageOptions.classList.remove('active');
+                });
+            });
+
+            // Load saved language
+            const savedLang = localStorage.getItem('selectedLanguage') || 'id';
+            if (savedLang !== 'id') {
+                changeLanguage(savedLang);
+                updateLanguageButton(savedLang);
+            }
+        }
+
+        function updateLanguageButton(lang) {
+            const languageBtn = document.getElementById('language-btn');
+            const flagIcons = {
+                'id': '🇮🇩',
+                'en': '🇺🇸',
+                'ar': '🇸🇦',
+                'jv': '🏛️'
+            };
+            
+            languageBtn.querySelector('.flag-icon').textContent = flagIcons[lang];
+            languageBtn.querySelector('[data-translate="current-lang"]').textContent = translations[lang]['current-lang'];
+        }
+
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('selectedLanguage', lang);
+            
+            // Apply translations to all elements with data-translate
+            const elementsToTranslate = document.querySelectorAll('[data-translate]');
+            elementsToTranslate.forEach(element => {
+                const key = element.getAttribute('data-translate');
+                if (translations[lang] && translations[lang][key]) {
+                    element.textContent = translations[lang][key];
+                }
+            });
+
+            // Handle RTL for Arabic
+            const isArabic = (lang === 'ar');
+            document.body.style.direction = isArabic ? 'rtl' : 'ltr';
+            document.body.style.textAlign = isArabic ? 'right' : 'left';
+            
+            // Specific element text alignments for RTL
+            const centeredElements = document.querySelectorAll('.section-title, .motto-section h2, .motto, .doa-section h3, .doa-content, .doa-reflection, .analysis-text, .analysis-text h3');
+            centeredElements.forEach(el => {
+                if (isArabic) {
+                    el.style.textAlign = 'right';
+                } else {
+                    el.style.textAlign = ''; // Reset to default/CSS-defined
+                }
+            });
+            document.querySelector('.story-content').style.textAlign = 'justify';
+            
+            // Update charts labels (optional, based on your needs)
+            updateChartsLanguage(lang);
+        }
+
+        function updateChartsLanguage(lang) {
+            // For a full translation, you would re-initialize the charts
+            // with labels from the translations object. Example:
+            
+            // chartData.frequency.labels = [
+            //    translations[lang]['chart-label-school'],
+            //    translations[lang]['chart-label-exercise'],
+            //    ...
+            // ];
+            // initCharts();
+        }
+
+        // Initialize everything when page loads
+        window.addEventListener('load', function() {
+            initWebGL();
+            initCharts();
+            initNavigation();
+            initCustomCursor();
+            initPhotoUpload();
+            initLanguageSelector();
+            
+            // Animate timeline items on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.animationPlayState = 'running';
+                    }
+                });
+            }, observerOptions);
+            
+            document.querySelectorAll('.timeline-item, .mission-item').forEach(item => {
+                observer.observe(item);
+            });
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            if (renderer) {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+        });
+
+        // Close lightbox on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeLightbox();
+            }
+        });
+
+        // Close lightbox on background click
+        document.getElementById('lightbox').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeLightbox();
+            }
+        });
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'982dcd26f5f6f91c',t:'MTc1ODUwMjE1NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
+
+
